@@ -1,6 +1,12 @@
 if(BUILD_TESTING)
     add_executable(tests
-        solver.cpp
+        grid_coords.cpp
+        grid_grid.cpp
+        grid_gridcell.cpp
+        solver_board.cpp
+        solver_placement_mask.cpp
+        solver_solver.cpp
+        solver_tetrominoes.cpp
     )
 
     set_target_properties(tests PROPERTIES CXX_EXTENSIONS OFF)

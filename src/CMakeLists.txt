@@ -1,6 +1,16 @@
 add_library(lib_tptps
+    grid/coords.hpp
+    grid/grid.hpp
+    grid/gridcell.hpp
+    solver/board.cpp
+    solver/board.hpp
+    solver/placement_mask.cpp
+    solver/placement_mask.hpp
     solver/solver.cpp
     solver/solver.hpp
+    solver/square.hpp
+    solver/tetrominoes.cpp
+    solver/tetrominoes.hpp
 )
 
 set_target_properties(lib_tptps PROPERTIES CXX_EXTENSIONS OFF)
