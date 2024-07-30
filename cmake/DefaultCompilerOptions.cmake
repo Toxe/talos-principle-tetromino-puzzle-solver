@@ -13,6 +13,7 @@ set(DEFAULT_GCC_OPTIONS
 # MSVC specific options
 set(DEFAULT_MSVC_OPTIONS
         /permissive-
+        /utf-8
 )
 
 # Clang-cl specific options
