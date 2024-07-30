@@ -1,4 +1,4 @@
-#include <iostream>
+#include "fmt/core.h"
 
 #include "solver/solver.hpp"
 
@@ -9,9 +9,9 @@ int main()
     const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}});
 
     if (!solution) {
-        std::cout << "no solution found";
+        fmt::print("no solution found\n");
         return 1;
     }
 
-    std::cout << solution->print();
+    fmt::print("{}", solution->print());
 }
