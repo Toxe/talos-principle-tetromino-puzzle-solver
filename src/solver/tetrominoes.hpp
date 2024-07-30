@@ -7,7 +7,6 @@
 namespace tptps {
 
 enum class Tetromino : char {
-    unknown = '?',
     empty = '.',
     I = 'I',
     O = 'O',

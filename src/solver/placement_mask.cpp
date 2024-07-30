@@ -33,7 +33,7 @@ using placement_mask_def = std::vector<std::string_view>;
 
 PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotation)
 {
-    assert(tetromino != Tetromino::empty && tetromino != Tetromino::unknown);
+    assert(tetromino != Tetromino::empty);
 
     static std::array<placement_mask_def, 4> masks_I{
         placement_mask_def{

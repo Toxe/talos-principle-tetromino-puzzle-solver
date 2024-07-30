@@ -6,7 +6,7 @@ namespace tptps {
 
 std::vector<Rotation> get_distinct_tetromino_orientations(Tetromino tetromino)
 {
-    assert(tetromino != Tetromino::empty && tetromino != Tetromino::unknown);
+    assert(tetromino != Tetromino::empty);
 
     switch (tetromino) {
         case Tetromino::I: return {Rotation::r0, Rotation::r90}; break;
