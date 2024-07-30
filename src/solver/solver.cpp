@@ -4,7 +4,7 @@
 
 namespace tptps {
 
-std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoes)
+std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoes, SolverStats& stats)
 {
     while (!tetrominoes.empty()) {
         const Tetromino t = tetrominoes.back();
@@ -12,14 +12,18 @@ std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoe
 
         const auto placements = get_all_possible_placements(board, t);
 
+        stats.possible_placements_calculated += placements.size();
+
         for (const auto& placement : placements) {
             Board tmp_board = board;
             tmp_board.place(placement);
 
+            ++stats.placements_checked;
+
             if (tmp_board.is_finished())
                 return tmp_board;
 
-            const auto returned_board = solve_puzzle(tmp_board, tetrominoes);
+            const auto returned_board = solve_puzzle(tmp_board, tetrominoes, stats);
 
             if (returned_board.has_value())
                 return *returned_board;

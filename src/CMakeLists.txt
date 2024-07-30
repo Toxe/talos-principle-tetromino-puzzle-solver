@@ -9,6 +9,8 @@ add_library(lib_tptps
     solver/solver.cpp
     solver/solver.hpp
     solver/square.hpp
+    solver/stats.cpp
+    solver/stats.hpp
     solver/tetrominoes.cpp
     solver/tetrominoes.hpp
 )

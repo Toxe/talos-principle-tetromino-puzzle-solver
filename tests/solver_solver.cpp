@@ -194,11 +194,13 @@ TEST_CASE("solver/solver")
 
     SECTION("solve puzzles")
     {
+        SolverStats stats;
+
         SECTION("World Hub A")
         {
             SECTION("Tutorial Puzzle")
             {
-                const auto solution = solve_puzzle(Board{4, 3}, {{Tetromino::J, Tetromino::J, Tetromino::Z}});
+                const auto solution = solve_puzzle(Board{4, 3}, {{Tetromino::J, Tetromino::J, Tetromino::Z}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -208,7 +210,7 @@ TEST_CASE("solver/solver")
 
             SECTION("Gate A")
             {
-                const auto solution = solve_puzzle(Board{4, 4}, {{Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L}});
+                const auto solution = solve_puzzle(Board{4, 4}, {{Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -218,7 +220,7 @@ TEST_CASE("solver/solver")
 
             SECTION("Laser Connector")
             {
-                const auto solution = solve_puzzle(Board{4, 3}, {{Tetromino::L, Tetromino::T, Tetromino::T}});
+                const auto solution = solve_puzzle(Board{4, 3}, {{Tetromino::L, Tetromino::T, Tetromino::T}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -228,7 +230,7 @@ TEST_CASE("solver/solver")
 
             SECTION("Cube")
             {
-                const auto solution = solve_puzzle(Board{4, 4}, {{Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z}});
+                const auto solution = solve_puzzle(Board{4, 4}, {{Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -241,7 +243,7 @@ TEST_CASE("solver/solver")
         {
             SECTION("Gate B")
             {
-                const auto solution = solve_puzzle(Board{4, 5}, {{Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z}});
+                const auto solution = solve_puzzle(Board{4, 5}, {{Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -251,7 +253,7 @@ TEST_CASE("solver/solver")
 
             SECTION("Fan")
             {
-                const auto solution = solve_puzzle(Board{4, 5}, {{Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z}});
+                const auto solution = solve_puzzle(Board{4, 5}, {{Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -261,7 +263,7 @@ TEST_CASE("solver/solver")
 
             SECTION("Recording")
             {
-                const auto solution = solve_puzzle(Board{4, 5}, {{Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T}});
+                const auto solution = solve_puzzle(Board{4, 5}, {{Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -274,7 +276,7 @@ TEST_CASE("solver/solver")
         {
             SECTION("Gate C")
             {
-                const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}});
+                const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
@@ -284,7 +286,7 @@ TEST_CASE("solver/solver")
 
             SECTION("Platform")
             {
-                const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::O, Tetromino::I, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T}});
+                const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::O, Tetromino::I, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T}}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
