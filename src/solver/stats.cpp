@@ -16,7 +16,7 @@ std::string format_duration(std::chrono::nanoseconds dur)
 
 std::string tptps::SolverStats::print() const
 {
-    return fmt::format("{}: {} checks, {} placements found", format_duration(std::chrono::steady_clock::now() - time_begin), placements_checked, possible_placements_calculated);
+    return fmt::format("checks: {:>8}, possible placements: {:>8}, {:>12}", placements_checked, possible_placements_calculated, format_duration(std::chrono::steady_clock::now() - time_begin));
 }
 
 }  // namespace tptps
