@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cassert>
+#include <stdexcept>
 
 namespace tptps {
 
@@ -33,8 +34,6 @@ using placement_mask_def = std::vector<std::string_view>;
 
 PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotation)
 {
-    assert(tetromino != Tetromino::empty);
-
     static std::array<placement_mask_def, 4> masks_I{
         placement_mask_def{
             "####",
@@ -180,6 +179,8 @@ PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotatio
         },
     };
 
+    assert(tetromino != Tetromino::empty);
+
     std::array<placement_mask_def, 4>* masks = nullptr;
 
     switch (tetromino) {
@@ -190,9 +191,10 @@ PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotatio
         case Tetromino::L: masks = &masks_L; break;
         case Tetromino::S: masks = &masks_S; break;
         case Tetromino::Z: masks = &masks_Z; break;
+        case Tetromino::empty: throw std::runtime_error{"invalid tetromino"};
     }
 
-    int idx = -1;
+    std::size_t idx = 0;
 
     switch (rotation) {
         case Rotation::r0: idx = 0; break;
@@ -202,7 +204,6 @@ PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotatio
     }
 
     assert(masks != nullptr);
-    assert(idx >= 0);
 
     return placement_mask_from_string(masks->at(idx));
 }
