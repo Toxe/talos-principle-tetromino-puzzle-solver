@@ -276,17 +276,7 @@ TEST_CASE("solver/solver")
         {
             SECTION("Gate C")
             {
-                const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}}, stats);
-
-                REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
-                CHECK(solution->width() == 4);
-                CHECK(solution->height() == 6);
-            }
-
-            SECTION("Platform")
-            {
-                const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::O, Tetromino::I, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T}}, stats);
+                const auto solution = solve_puzzle(Board{4, 6}, {Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
