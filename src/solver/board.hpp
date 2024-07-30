@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "../grid/grid.hpp"
 #include "square.hpp"
 #include "tetrominoes.hpp"
@@ -28,6 +30,8 @@ public:
 
     [[nodiscard]] bool is_finished() const;
     [[nodiscard]] bool is_empty_square(const Square coords) const { return grid_.at(coords) == Tetromino::empty; }
+
+    [[nodiscard]] std::string print() const;
 
 private:
     Grid<Tetromino, Square> grid_;

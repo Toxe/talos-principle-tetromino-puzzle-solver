@@ -1,4 +1,5 @@
 #include "catch2/catch_test_macros.hpp"
+#include "catch2/matchers/catch_matchers_string.hpp"
 
 #include "../src/solver/board.hpp"
 
@@ -94,6 +95,50 @@ TEST_CASE("solver/board")
         // JZZJ
         // JZJJ
         CHECK(board.is_finished());
+    }
+
+    SECTION("print Board")
+    {
+        SECTION("empty Board")
+        {
+            const std::string s = "....\n"
+                                  "....\n"
+                                  "....\n";
+
+            const Board board{4, 3};
+
+            CHECK_THAT(board.print(), Catch::Matchers::Equals(s));
+        }
+
+        SECTION("partially filled Board")
+        {
+            const std::string s = ".TTT\n"
+                                  "..T.\n"
+                                  "L...\n"
+                                  "LZZ.\n"
+                                  "LLZZ\n";
+
+            Board board{4, 5};
+            board.place({{1, 0}, Tetromino::T, Rotation::r0});
+            board.place({{0, 2}, Tetromino::L, Rotation::r0});
+            board.place({{1, 3}, Tetromino::Z, Rotation::r0});
+
+            CHECK_THAT(board.print(), Catch::Matchers::Equals(s));
+        }
+
+        SECTION("completed Board")
+        {
+            const std::string s = "JJZJ\n"
+                                  "JZZJ\n"
+                                  "JZJJ\n";
+
+            Board board{4, 3};
+            board.place({{0, 0}, Tetromino::J, Rotation::r180});
+            board.place({{1, 0}, Tetromino::Z, Rotation::r90});
+            board.place({{2, 0}, Tetromino::J, Rotation::r0});
+
+            CHECK_THAT(board.print(), Catch::Matchers::Equals(s));
+        }
     }
 }
 

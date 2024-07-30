@@ -47,4 +47,18 @@ void Board::place(const Placement placement)
     }
 }
 
+std::string Board::print() const
+{
+    std::string s;
+
+    for (Square::coordinates_type y = 0; y < height(); ++y) {
+        for (Square::coordinates_type x = 0; x < width(); ++x)
+            s += static_cast<char>(grid_.at(x, y));
+
+        s += '\n';
+    }
+
+    return s;
+}
+
 }  // namespace tptps
