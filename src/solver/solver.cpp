@@ -53,7 +53,7 @@ std::vector<Placement> find_possible_placements(const Board& board, const Tetrom
         for (Square::coordinates_type x = 0; x <= board.width() - mask.width(); ++x) {
             const Placement placement{{x, y}, tetromino, rotation};
 
-            if (board.can_place(placement))
+            if (board.can_place(placement, mask))
                 placements.push_back(placement);
         }
     }

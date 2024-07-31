@@ -3,6 +3,7 @@
 #include <string>
 
 #include "../grid/grid.hpp"
+#include "placement_mask.hpp"
 #include "square.hpp"
 #include "tetrominoes.hpp"
 
@@ -23,7 +24,7 @@ public:
     int width() const { return grid_.width(); }
     int height() const { return grid_.height(); }
 
-    [[nodiscard]] bool can_place(Placement placement) const;
+    [[nodiscard]] bool can_place(Placement placement, const PlacementMask& mask) const;
     void place(Placement placement);
 
     [[nodiscard]] Tetromino at(const Square coords) const { return grid_.at(coords); }
