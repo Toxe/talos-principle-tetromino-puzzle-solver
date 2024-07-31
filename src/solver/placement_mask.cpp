@@ -30,158 +30,156 @@ PlacementMask placement_mask_from_string(const std::vector<std::string_view>& da
     return mask;
 }
 
-using placement_mask_def = std::vector<std::string_view>;
-
 PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotation)
 {
-    static std::array<placement_mask_def, 4> masks_I{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_I{
+        placement_mask_from_string({
             "####",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "#",
             "#",
             "#",
             "#",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "####",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "#",
             "#",
             "#",
             "#",
-        },
+        }),
     };
 
-    static std::array<placement_mask_def, 4> masks_O{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_O{
+        placement_mask_from_string({
             "##",
             "##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "##",
             "##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "##",
             "##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "##",
             "##",
-        },
+        }),
     };
 
-    static std::array<placement_mask_def, 4> masks_T{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_T{
+        placement_mask_from_string({
             "###",
             ".#.",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             ".#",
             "##",
             ".#",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             ".#.",
             "###",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "#.",
             "##",
             "#.",
-        },
+        }),
     };
 
-    static std::array<placement_mask_def, 4> masks_J{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_J{
+        placement_mask_from_string({
             ".#",
             ".#",
             "##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "#..",
             "###",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "##",
             "#.",
             "#.",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "###",
             "..#",
-        },
+        }),
     };
 
-    static std::array<placement_mask_def, 4> masks_L{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_L{
+        placement_mask_from_string({
             "#.",
             "#.",
             "##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "###",
             "#..",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "##",
             ".#",
             ".#",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "..#",
             "###",
-        },
+        }),
     };
 
-    static std::array<placement_mask_def, 4> masks_S{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_S{
+        placement_mask_from_string({
             ".##",
             "##.",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "#.",
             "##",
             ".#",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             ".##",
             "##.",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "#.",
             "##",
             ".#",
-        },
+        }),
     };
 
-    static std::array<placement_mask_def, 4> masks_Z{
-        placement_mask_def{
+    static std::array<PlacementMask, 4> masks_Z{
+        placement_mask_from_string({
             "##.",
             ".##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             ".#",
             "##",
             "#.",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             "##.",
             ".##",
-        },
-        placement_mask_def{
+        }),
+        placement_mask_from_string({
             ".#",
             "##",
             "#.",
-        },
+        }),
     };
 
     assert(tetromino != Tetromino::empty);
 
-    std::array<placement_mask_def, 4>* masks = nullptr;
+    std::array<PlacementMask, 4>* masks = nullptr;
 
     switch (tetromino) {
         case Tetromino::I: masks = &masks_I; break;
@@ -205,7 +203,7 @@ PlacementMask get_tetromino_placement_mask(Tetromino tetromino, Rotation rotatio
 
     assert(masks != nullptr);
 
-    return placement_mask_from_string(masks->at(idx));
+    return masks->at(idx);
 }
 
 }  // namespace tptps
