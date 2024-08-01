@@ -6,6 +6,7 @@ if(BUILD_TESTING)
         solver_board.cpp
         solver_placement_mask.cpp
         solver_solver.cpp
+        solver_square.cpp
         solver_tetrominoes.cpp
         utility_factorial.cpp
         utility_statistics.cpp

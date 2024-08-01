@@ -8,6 +8,7 @@ add_library(lib_tptps
     solver/placement_mask.hpp
     solver/solver.cpp
     solver/solver.hpp
+    solver/square.cpp
     solver/square.hpp
     solver/stats.cpp
     solver/stats.hpp
