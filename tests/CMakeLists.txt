@@ -8,6 +8,7 @@ if(BUILD_TESTING)
         solver_solver.cpp
         solver_tetrominoes.cpp
         utility_factorial.cpp
+        utility_statistics.cpp
     )
 
     set_target_properties(tests PROPERTIES CXX_EXTENSIONS OFF)

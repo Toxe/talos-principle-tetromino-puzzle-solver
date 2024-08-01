@@ -15,6 +15,7 @@ add_library(lib_tptps
     solver/tetrominoes.hpp
     utility/factorial.cpp
     utility/factorial.hpp
+    utility/statistics.hpp
 )
 
 set_target_properties(lib_tptps PROPERTIES CXX_EXTENSIONS OFF)
