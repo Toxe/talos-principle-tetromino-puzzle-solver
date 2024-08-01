@@ -8,6 +8,7 @@ if(BUILD_TESTING)
         solver_solver.cpp
         solver_square.cpp
         solver_tetrominoes.cpp
+        utility_duration.cpp
         utility_factorial.cpp
         utility_statistics.cpp
     )

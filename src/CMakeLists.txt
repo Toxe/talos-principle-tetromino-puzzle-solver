@@ -14,6 +14,8 @@ add_library(lib_tptps
     solver/stats.hpp
     solver/tetrominoes.cpp
     solver/tetrominoes.hpp
+    utility/duration.cpp
+    utility/duration.hpp
     utility/factorial.cpp
     utility/factorial.hpp
     utility/statistics.hpp
