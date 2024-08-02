@@ -10,8 +10,6 @@ add_library(lib_tptps
     solver/solver.hpp
     solver/square.cpp
     solver/square.hpp
-    solver/stats.cpp
-    solver/stats.hpp
     solver/tetrominoes.cpp
     solver/tetrominoes.hpp
     utility/duration.cpp
