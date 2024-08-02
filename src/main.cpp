@@ -1,13 +1,19 @@
+#include <chrono>
+
 #include "fmt/core.h"
 
 #include "solver/solver.hpp"
+#include "utility/duration.hpp"
 
 using namespace tptps;
 
 int main()
 {
     SolverStats stats;
+
+    const auto t0 = std::chrono::steady_clock::now();
     const auto solution = solve_puzzle(Board{4, 6}, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}}, stats);
+    const auto t1 = std::chrono::steady_clock::now();
 
     if (!solution) {
         fmt::print("no solution found\n");
@@ -15,5 +21,5 @@ int main()
     }
 
     fmt::print("{}\n", solution->print());
-    fmt::print("{}\n", stats.print());
+    fmt::print("{}\n", print_duration(t1 - t0));
 }
