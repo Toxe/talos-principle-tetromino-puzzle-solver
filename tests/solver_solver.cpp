@@ -7,14 +7,14 @@ namespace tptps {
 
 TEST_CASE("solver/solver")
 {
-    SECTION("find all possible placements for a tetromino with a certain rotation on the Board")
+    SECTION("find all possible placements for a tetromino with a specific rotation on the Board")
     {
         SECTION("empty Board")
         {
             Board board{4, 4};
 
-            const auto placements_r0 = find_possible_placements(board, Tetromino::L, Rotation::r0);
-            const auto placements_r90 = find_possible_placements(board, Tetromino::L, Rotation::r90);
+            const auto placements_r0 = find_possible_placements_for_rotation(board, Tetromino::L, Rotation::r0);
+            const auto placements_r90 = find_possible_placements_for_rotation(board, Tetromino::L, Rotation::r90);
 
             CHECK_THAT(placements_r0, Catch::Matchers::SizeIs(6));
             CHECK_THAT(placements_r90, Catch::Matchers::SizeIs(6));
@@ -49,10 +49,10 @@ TEST_CASE("solver/solver")
             board.place({{0, 0}, Tetromino::L, Rotation::r90});
             board.place({{0, 1}, Tetromino::Z, Rotation::r90});
 
-            const std::vector<Placement> placements_r0 = find_possible_placements(board, Tetromino::T, Rotation::r0);
-            const std::vector<Placement> placements_r90 = find_possible_placements(board, Tetromino::T, Rotation::r90);
-            const std::vector<Placement> placements_r180 = find_possible_placements(board, Tetromino::T, Rotation::r180);
-            const std::vector<Placement> placements_r270 = find_possible_placements(board, Tetromino::T, Rotation::r270);
+            const std::vector<Placement> placements_r0 = find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r0);
+            const std::vector<Placement> placements_r90 = find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r90);
+            const std::vector<Placement> placements_r180 = find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r180);
+            const std::vector<Placement> placements_r270 = find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r270);
 
             CHECK_THAT(placements_r0, Catch::Matchers::SizeIs(0));
             CHECK_THAT(placements_r90, Catch::Matchers::SizeIs(2));
@@ -79,8 +79,8 @@ TEST_CASE("solver/solver")
             board.place({{0, 1}, Tetromino::Z, Rotation::r90});
             board.place({{2, 2}, Tetromino::O, Rotation::r0});
 
-            CHECK(find_possible_placements(board, Tetromino::T, Rotation::r0).empty());
-            CHECK(find_possible_placements(board, Tetromino::T, Rotation::r90).empty());
+            CHECK(find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r0).empty());
+            CHECK(find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r90).empty());
         }
 
         SECTION("full Board")
@@ -94,8 +94,8 @@ TEST_CASE("solver/solver")
             // LLLT
             // LtTT
             // tttT
-            CHECK(find_possible_placements(board, Tetromino::L, Rotation::r0).empty());
-            CHECK(find_possible_placements(board, Tetromino::L, Rotation::r90).empty());
+            CHECK(find_possible_placements_for_rotation(board, Tetromino::L, Rotation::r0).empty());
+            CHECK(find_possible_placements_for_rotation(board, Tetromino::L, Rotation::r90).empty());
         }
     }
 
@@ -105,7 +105,7 @@ TEST_CASE("solver/solver")
         {
             Board board{4, 4};
 
-            const auto placements = get_all_possible_placements(board, Tetromino::L);
+            const auto placements = find_all_possible_placements(board, Tetromino::L);
 
             CHECK_THAT(placements, Catch::Matchers::SizeIs(24));
             CHECK_THAT(placements, Catch::Matchers::UnorderedRangeEquals(std::vector<Placement>{
@@ -147,7 +147,7 @@ TEST_CASE("solver/solver")
             board.place({{0, 0}, Tetromino::L, Rotation::r90});
             board.place({{0, 1}, Tetromino::Z, Rotation::r90});
 
-            const std::vector<Placement> placements = get_all_possible_placements(board, Tetromino::T);
+            const std::vector<Placement> placements = find_all_possible_placements(board, Tetromino::T);
 
             CHECK_THAT(placements, Catch::Matchers::SizeIs(4));
             CHECK_THAT(placements, Catch::Matchers::UnorderedRangeEquals(std::vector<Placement>{
@@ -170,7 +170,7 @@ TEST_CASE("solver/solver")
             board.place({{0, 1}, Tetromino::Z, Rotation::r90});
             board.place({{2, 2}, Tetromino::O, Rotation::r0});
 
-            const auto placements = get_all_possible_placements(board, Tetromino::T);
+            const auto placements = find_all_possible_placements(board, Tetromino::T);
 
             CHECK(placements.empty());
         }
@@ -186,7 +186,7 @@ TEST_CASE("solver/solver")
             // LLLT
             // LtTT
             // tttT
-            const auto placements = get_all_possible_placements(board, Tetromino::L);
+            const auto placements = find_all_possible_placements(board, Tetromino::L);
 
             CHECK(placements.empty());
         }

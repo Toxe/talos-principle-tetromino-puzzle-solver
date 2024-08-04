@@ -10,7 +10,7 @@ std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoe
         const Tetromino t = tetrominoes.back();
         tetrominoes.pop_back();
 
-        const auto placements = get_all_possible_placements(board, t);
+        const auto placements = find_all_possible_placements(board, t);
 
         stats.possible_placements_calculated += placements.size();
 
@@ -33,18 +33,18 @@ std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoe
     return std::nullopt;
 }
 
-std::vector<Placement> get_all_possible_placements(const Board& board, const Tetromino tetromino)
+std::vector<Placement> find_all_possible_placements(const Board& board, const Tetromino tetromino)
 {
     const auto orientations = get_distinct_tetromino_orientations(tetromino);
     std::vector<Placement> placements;
 
     for (const auto rotation : orientations)
-        placements.append_range(find_possible_placements(board, tetromino, rotation));
+        placements.append_range(find_possible_placements_for_rotation(board, tetromino, rotation));
 
     return placements;
 }
 
-std::vector<Placement> find_possible_placements(const Board& board, const Tetromino tetromino, const Rotation rotation)
+std::vector<Placement> find_possible_placements_for_rotation(const Board& board, const Tetromino tetromino, const Rotation rotation)
 {
     std::vector<Placement> placements;
     const auto mask = get_tetromino_placement_mask(tetromino, rotation);

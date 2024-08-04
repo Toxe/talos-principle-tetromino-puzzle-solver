@@ -14,7 +14,7 @@ struct SolverStats {
 };
 
 std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoes, SolverStats& stats);
-std::vector<Placement> get_all_possible_placements(const Board& board, Tetromino t);
-std::vector<Placement> find_possible_placements(const Board& board, Tetromino t, Rotation rotation);
+std::vector<Placement> find_all_possible_placements(const Board& board, Tetromino t);
+std::vector<Placement> find_possible_placements_for_rotation(const Board& board, Tetromino t, Rotation rotation);
 
 }  // namespace tptps
