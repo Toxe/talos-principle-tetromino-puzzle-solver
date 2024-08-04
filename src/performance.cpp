@@ -84,9 +84,9 @@ void print_csv_summary(const std::string_view section, const std::string_view na
     fmt::print("{},{},{},{},{},,,,,{},{},{},{}\n", section, name, print_square(size), run_count, max_runs, print_duration(total_duration), dump_csv_stats(durations), dump_csv_stats(placements_checked), dump_csv_stats(possible_placements_calculated));
 }
 
-int count_tetromino_permutations(std::vector<Tetromino> tetrominoes)
+uint64_t count_tetromino_permutations(std::vector<Tetromino> tetrominoes)
 {
-    int n = 0;
+    uint64_t n = 0;
 
     std::sort(tetrominoes.begin(), tetrominoes.end());
 
