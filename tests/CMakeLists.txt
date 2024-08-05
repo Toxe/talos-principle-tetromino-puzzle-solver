@@ -4,6 +4,7 @@ if(BUILD_TESTING)
         grid_grid.cpp
         grid_gridcell.cpp
         solver_board.cpp
+        solver_placement.cpp
         solver_placement_mask.cpp
         solver_rotation.cpp
         solver_solver.cpp

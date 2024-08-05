@@ -104,7 +104,7 @@ SolverStats solve(const Square size, const std::vector<Tetromino>& tetrominoes)
 
     const auto solution = solve_puzzle(board, tetrominoes, stats);
 
-    if (!solution || !solution->is_finished())
+    if (!solution || !solution->is_filled())
         die(fmt::format("no solution found for: \"{}\"", dump_tetrominoes(tetrominoes)));
 
     return stats;

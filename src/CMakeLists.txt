@@ -4,6 +4,8 @@ add_library(lib_tptps
     grid/gridcell.hpp
     solver/board.cpp
     solver/board.hpp
+    solver/placement.cpp
+    solver/placement.hpp
     solver/placement_mask.cpp
     solver/placement_mask.hpp
     solver/rotation.cpp

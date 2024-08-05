@@ -7,15 +7,6 @@ namespace tptps {
 
 TEST_CASE("solver/board")
 {
-    SECTION("a new Board is empty")
-    {
-        const Board board{4, 3};
-
-        for (Square::coordinates_type row = 0; row < 3; ++row)
-            for (Square::coordinates_type col = 0; col < 4; ++col)
-                CHECK(board.is_empty_square({col, row}));
-    }
-
     SECTION("can get the number of columns and rows")
     {
         const Board board1{4, 3};
@@ -27,107 +18,56 @@ TEST_CASE("solver/board")
         CHECK(board2.height() == 4);
     }
 
-    SECTION("can check the content of squares, check & place tetrominoes and revert tetrominoe placements")
+    SECTION("can change and check squares")
     {
-        Board board{4, 3};
+        Board board{3, 4};
 
-        // check with empty Board
-        CHECK(board.can_place({{0, 0}, Tetromino::I, Rotation::r0}, get_tetromino_placement_mask(Tetromino::I, Rotation::r0)));
-        CHECK(board.can_place({{0, 0}, Tetromino::I, Rotation::r90}, get_tetromino_placement_mask(Tetromino::I, Rotation::r90)) == false);
-        CHECK(board.can_place({{2, 0}, Tetromino::L, Rotation::r0}, get_tetromino_placement_mask(Tetromino::L, Rotation::r0)));
-        CHECK(board.can_place({{3, 0}, Tetromino::L, Rotation::r0}, get_tetromino_placement_mask(Tetromino::L, Rotation::r0)) == false);
-        CHECK(board.can_place({{1, 0}, Tetromino::L, Rotation::r270}, get_tetromino_placement_mask(Tetromino::L, Rotation::r270)));
-        CHECK(board.can_place({{2, 0}, Tetromino::L, Rotation::r270}, get_tetromino_placement_mask(Tetromino::L, Rotation::r270)) == false);
-        CHECK(board.can_place({{3, 0}, Tetromino::L, Rotation::r270}, get_tetromino_placement_mask(Tetromino::L, Rotation::r270)) == false);
-        CHECK(board.can_place({{0, 0}, Tetromino::O, Rotation::r0}, get_tetromino_placement_mask(Tetromino::O, Rotation::r0)));
-
-        // .L..
-        // .L..
-        // .LL.
-        board.place({{1, 0}, Tetromino::L, Rotation::r0});
-
-        CHECK(board.at({1, 0}) == Tetromino::L);
-        CHECK(board.at({1, 1}) == Tetromino::L);
-        CHECK(board.at({1, 2}) == Tetromino::L);
-        CHECK(board.at({2, 2}) == Tetromino::L);
-        CHECK(board.is_empty_square({0, 0}));
-        CHECK(board.is_empty_square({0, 1}));
+        CHECK(board.at({0, 2}) == Tetromino::empty);
         CHECK(board.is_empty_square({0, 2}));
-        CHECK(board.is_empty_square({2, 0}));
-        CHECK(board.is_empty_square({2, 1}));
-        CHECK(board.is_empty_square({3, 0}));
-        CHECK(board.is_empty_square({3, 1}));
-        CHECK(board.is_empty_square({3, 2}));
 
-        CHECK(board.can_place({{2, 0}, Tetromino::T, Rotation::r90}, get_tetromino_placement_mask(Tetromino::T, Rotation::r90)));
-        CHECK(board.can_place({{2, 0}, Tetromino::T, Rotation::r270}, get_tetromino_placement_mask(Tetromino::T, Rotation::r270)) == false);
+        board.at({0, 2}) = Tetromino::T;
 
-        // .L.T
-        // .LTT
-        // .LLT
-        board.place({{2, 0}, Tetromino::T, Rotation::r90});
-
-        CHECK(board.at({3, 0}) == Tetromino::T);
-        CHECK(board.at({2, 1}) == Tetromino::T);
-        CHECK(board.at({3, 1}) == Tetromino::T);
-        CHECK(board.at({3, 2}) == Tetromino::T);
-        CHECK(board.is_empty_square({0, 0}));
-        CHECK(board.is_empty_square({0, 1}));
-        CHECK(board.is_empty_square({0, 2}));
-        CHECK(board.is_empty_square({2, 0}));
-
-        // check with mostly filled Board
-        CHECK(board.can_place({{0, 0}, Tetromino::I, Rotation::r90}, get_tetromino_placement_mask(Tetromino::I, Rotation::r90)) == false);
-        CHECK(board.can_place({{2, 0}, Tetromino::L, Rotation::r0}, get_tetromino_placement_mask(Tetromino::L, Rotation::r0)) == false);
-        CHECK(board.can_place({{1, 0}, Tetromino::L, Rotation::r270}, get_tetromino_placement_mask(Tetromino::L, Rotation::r270)) == false);
-        CHECK(board.can_place({{0, 0}, Tetromino::O, Rotation::r0}, get_tetromino_placement_mask(Tetromino::O, Rotation::r0)) == false);
-
-        // revert placements
-        board.revert_placement({{2, 0}, Tetromino::T, Rotation::r90});
-        CHECK(board.at({1, 0}) == Tetromino::L);
-        CHECK(board.at({1, 1}) == Tetromino::L);
-        CHECK(board.at({1, 2}) == Tetromino::L);
-        CHECK(board.at({2, 2}) == Tetromino::L);
-        CHECK(board.is_empty_square({0, 0}));
-        CHECK(board.is_empty_square({0, 1}));
-        CHECK(board.is_empty_square({0, 2}));
-        CHECK(board.is_empty_square({2, 0}));
-        CHECK(board.is_empty_square({2, 1}));
-        CHECK(board.is_empty_square({3, 0}));
-        CHECK(board.is_empty_square({3, 1}));
-        CHECK(board.is_empty_square({3, 2}));
-
-        board.revert_placement({{1, 0}, Tetromino::L, Rotation::r0});
-        CHECK(board.is_empty());
+        CHECK(board.at({0, 2}) == Tetromino::T);
+        CHECK(board.is_empty_square({0, 2}) == false);
     }
 
-    SECTION("can check if the whole Board is filled or empty")
+    SECTION("can check if the whole Board is empty or filled")
     {
         Board board{4, 3};
 
+        // a new Board is empty
         CHECK(board.is_empty());
-        CHECK(board.is_finished() == false);
+        CHECK(board.is_filled() == false);
 
         // JJ..
         // J...
         // J...
-        board.place({{0, 0}, Tetromino::J, Rotation::r180});
+        board.at({0, 0}) = Tetromino::J;
+        board.at({1, 0}) = Tetromino::J;
+        board.at({0, 1}) = Tetromino::J;
+        board.at({0, 2}) = Tetromino::J;
         CHECK(board.is_empty() == false);
-        CHECK(board.is_finished() == false);
+        CHECK(board.is_filled() == false);
 
         // JJZ.
         // JZZ.
         // JZ..
-        board.place({{1, 0}, Tetromino::Z, Rotation::r90});
+        board.at({2, 0}) = Tetromino::Z;
+        board.at({1, 1}) = Tetromino::Z;
+        board.at({2, 1}) = Tetromino::Z;
+        board.at({1, 2}) = Tetromino::Z;
         CHECK(board.is_empty() == false);
-        CHECK(board.is_finished() == false);
+        CHECK(board.is_filled() == false);
 
         // JJZJ
         // JZZJ
         // JZJJ
-        board.place({{2, 0}, Tetromino::J, Rotation::r0});
+        board.at({3, 0}) = Tetromino::J;
+        board.at({3, 1}) = Tetromino::J;
+        board.at({2, 2}) = Tetromino::J;
+        board.at({3, 2}) = Tetromino::J;
         CHECK(board.is_empty() == false);
-        CHECK(board.is_finished());
+        CHECK(board.is_filled());
     }
 
     SECTION("print Board")
@@ -152,9 +92,18 @@ TEST_CASE("solver/board")
                                   "LLZZ\n";
 
             Board board{4, 5};
-            board.place({{1, 0}, Tetromino::T, Rotation::r0});
-            board.place({{0, 2}, Tetromino::L, Rotation::r0});
-            board.place({{1, 3}, Tetromino::Z, Rotation::r0});
+            board.at({1, 0}) = Tetromino::T;
+            board.at({2, 0}) = Tetromino::T;
+            board.at({3, 0}) = Tetromino::T;
+            board.at({2, 1}) = Tetromino::T;
+            board.at({0, 2}) = Tetromino::L;
+            board.at({0, 3}) = Tetromino::L;
+            board.at({0, 4}) = Tetromino::L;
+            board.at({1, 4}) = Tetromino::L;
+            board.at({1, 3}) = Tetromino::Z;
+            board.at({2, 3}) = Tetromino::Z;
+            board.at({2, 4}) = Tetromino::Z;
+            board.at({3, 4}) = Tetromino::Z;
 
             CHECK_THAT(board.print(), Catch::Matchers::Equals(s));
         }
@@ -166,9 +115,18 @@ TEST_CASE("solver/board")
                                   "JZJJ\n";
 
             Board board{4, 3};
-            board.place({{0, 0}, Tetromino::J, Rotation::r180});
-            board.place({{1, 0}, Tetromino::Z, Rotation::r90});
-            board.place({{2, 0}, Tetromino::J, Rotation::r0});
+            board.at({0, 0}) = Tetromino::J;
+            board.at({1, 0}) = Tetromino::J;
+            board.at({0, 1}) = Tetromino::J;
+            board.at({0, 2}) = Tetromino::J;
+            board.at({2, 0}) = Tetromino::Z;
+            board.at({1, 1}) = Tetromino::Z;
+            board.at({2, 1}) = Tetromino::Z;
+            board.at({1, 2}) = Tetromino::Z;
+            board.at({3, 0}) = Tetromino::J;
+            board.at({3, 1}) = Tetromino::J;
+            board.at({2, 2}) = Tetromino::J;
+            board.at({3, 2}) = Tetromino::J;
 
             CHECK_THAT(board.print(), Catch::Matchers::Equals(s));
         }

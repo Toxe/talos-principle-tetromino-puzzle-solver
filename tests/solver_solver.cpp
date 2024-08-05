@@ -39,8 +39,8 @@ TEST_CASE("solver/solver")
             // LZ..
             // ZZ..
             // Z...
-            board.place({{0, 0}, Tetromino::L, Rotation::r90});
-            board.place({{0, 1}, Tetromino::Z, Rotation::r90});
+            apply_placement(board, {{0, 0}, Tetromino::L, Rotation::r90});
+            apply_placement(board, {{0, 1}, Tetromino::Z, Rotation::r90});
 
             const std::vector<Placement> placements_r0 = find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r0);
             const std::vector<Placement> placements_r90 = find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r90);
@@ -68,9 +68,9 @@ TEST_CASE("solver/solver")
             // LZ..
             // ZZOO
             // Z.OO
-            board.place({{0, 0}, Tetromino::L, Rotation::r90});
-            board.place({{0, 1}, Tetromino::Z, Rotation::r90});
-            board.place({{2, 2}, Tetromino::O, Rotation::r0});
+            apply_placement(board, {{0, 0}, Tetromino::L, Rotation::r90});
+            apply_placement(board, {{0, 1}, Tetromino::Z, Rotation::r90});
+            apply_placement(board, {{2, 2}, Tetromino::O, Rotation::r0});
 
             CHECK(find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r0).empty());
             CHECK(find_possible_placements_for_rotation(board, Tetromino::T, Rotation::r90).empty());
@@ -80,9 +80,9 @@ TEST_CASE("solver/solver")
         {
             Board board{4, 3};
 
-            board.place({{0, 0}, Tetromino::L, Rotation::r90});
-            board.place({{0, 1}, Tetromino::T, Rotation::r180});
-            board.place({{2, 0}, Tetromino::T, Rotation::r90});
+            apply_placement(board, {{0, 0}, Tetromino::L, Rotation::r90});
+            apply_placement(board, {{0, 1}, Tetromino::T, Rotation::r180});
+            apply_placement(board, {{2, 0}, Tetromino::T, Rotation::r90});
 
             // LLLT
             // LtTT
@@ -123,8 +123,8 @@ TEST_CASE("solver/solver")
             // LZ..
             // ZZ..
             // Z...
-            board.place({{0, 0}, Tetromino::L, Rotation::r90});
-            board.place({{0, 1}, Tetromino::Z, Rotation::r90});
+            apply_placement(board, {{0, 0}, Tetromino::L, Rotation::r90});
+            apply_placement(board, {{0, 1}, Tetromino::Z, Rotation::r90});
 
             const std::vector<Placement> placements = find_all_possible_placements(board, Tetromino::T);
 
@@ -145,9 +145,9 @@ TEST_CASE("solver/solver")
             // LZ..
             // ZZOO
             // Z.OO
-            board.place({{0, 0}, Tetromino::L, Rotation::r90});
-            board.place({{0, 1}, Tetromino::Z, Rotation::r90});
-            board.place({{2, 2}, Tetromino::O, Rotation::r0});
+            apply_placement(board, {{0, 0}, Tetromino::L, Rotation::r90});
+            apply_placement(board, {{0, 1}, Tetromino::Z, Rotation::r90});
+            apply_placement(board, {{2, 2}, Tetromino::O, Rotation::r0});
 
             const auto placements = find_all_possible_placements(board, Tetromino::T);
 
@@ -158,9 +158,9 @@ TEST_CASE("solver/solver")
         {
             Board board{4, 3};
 
-            board.place({{0, 0}, Tetromino::L, Rotation::r90});
-            board.place({{0, 1}, Tetromino::T, Rotation::r180});
-            board.place({{2, 0}, Tetromino::T, Rotation::r90});
+            apply_placement(board, {{0, 0}, Tetromino::L, Rotation::r90});
+            apply_placement(board, {{0, 1}, Tetromino::T, Rotation::r180});
+            apply_placement(board, {{2, 0}, Tetromino::T, Rotation::r90});
 
             // LLLT
             // LtTT
@@ -183,7 +183,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::J, Tetromino::J, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 3);
                 CHECK(board.is_empty());
@@ -195,7 +195,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 4);
                 CHECK(board.is_empty());
@@ -207,7 +207,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::L, Tetromino::T, Tetromino::T}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 3);
                 CHECK(board.is_empty());
@@ -219,7 +219,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 4);
                 CHECK(board.is_empty());
@@ -234,7 +234,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 5);
                 CHECK(board.is_empty());
@@ -246,7 +246,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 5);
                 CHECK(board.is_empty());
@@ -258,7 +258,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 5);
                 CHECK(board.is_empty());
@@ -273,7 +273,7 @@ TEST_CASE("solver/solver")
                 const auto solution = solve_puzzle(board, {Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
-                CHECK(solution->is_finished());
+                CHECK(solution->is_filled());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 6);
                 CHECK(board.is_empty());

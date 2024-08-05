@@ -1,5 +1,6 @@
 #include "solver.hpp"
 
+#include <algorithm>
 #include <cassert>
 
 #include "placement_mask.hpp"
@@ -7,8 +8,8 @@
 namespace tptps {
 
 struct WithPlacedPiece {
-    WithPlacedPiece(Board& board, Placement placement) : board_{board}, placement_{placement} { board_.place(placement); }
-    ~WithPlacedPiece() { board_.revert_placement(placement_); }
+    WithPlacedPiece(Board& board, Placement placement) : board_{board}, placement_{placement} { apply_placement(board_, placement); }
+    ~WithPlacedPiece() { revert_placement(board_, placement_); }
 
 private:
     Board& board_;
@@ -39,7 +40,7 @@ std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetromino
             const WithPlacedPiece with_owner_of_square{board, placement};
             ++stats.placements_checked;
 
-            if (board.is_finished())
+            if (board.is_filled())
                 return board;
 
             if (const auto returned_board = solve_puzzle(board, new_list, stats); returned_board)
@@ -71,7 +72,7 @@ std::vector<Placement> find_possible_placements_for_rotation(const Board& board,
             for (Square::coordinates_type y = 0; y <= board.height() - mask.height(); ++y) {
                 const Placement placement{{x, y}, tetromino, rotation};
 
-                if (board.can_place(placement, mask)) {
+                if (is_possible_placement(board, placement, mask)) {
                     placements.push_back(placement);
                     break;
                 }
@@ -82,7 +83,7 @@ std::vector<Placement> find_possible_placements_for_rotation(const Board& board,
             for (Square::coordinates_type x = 0; x <= board.width() - mask.width(); ++x) {
                 const Placement placement{{x, y}, tetromino, rotation};
 
-                if (board.can_place(placement, mask)) {
+                if (is_possible_placement(board, placement, mask)) {
                     placements.push_back(placement);
                     break;
                 }
