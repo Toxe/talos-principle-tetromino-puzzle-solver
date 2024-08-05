@@ -48,6 +48,22 @@ void Board::place(const Placement placement)
     }
 }
 
+void Board::revert_placement(const Placement placement)
+{
+    const auto mask = get_tetromino_placement_mask(placement.tetromino, placement.rotation);
+
+    for (Square::coordinates_type y = 0; y < mask.height(); ++y) {
+        for (Square::coordinates_type x = 0; x < mask.width(); ++x) {
+            Square square = placement.coords + Square{x, y};
+
+            if (mask.at({x, y})) {
+                assert(!is_empty_square(square));
+                grid_.at(square) = Tetromino::empty;
+            }
+        }
+    }
+}
+
 std::string Board::print() const
 {
     std::string s;

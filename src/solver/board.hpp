@@ -26,6 +26,7 @@ public:
 
     [[nodiscard]] bool can_place(Placement placement, const PlacementMask& mask) const;
     void place(Placement placement);
+    void revert_placement(Placement placement);
 
     [[nodiscard]] Tetromino at(const Square coords) const { return grid_.at(coords); }
     [[nodiscard]] bool is_empty_square(const Square coords) const { return grid_.at(coords) == Tetromino::empty; }

@@ -27,7 +27,7 @@ TEST_CASE("solver/board")
         CHECK(board2.height() == 4);
     }
 
-    SECTION("can check and place tetrominoes and check the content of squares")
+    SECTION("can check the content of squares, check & place tetrominoes and revert tetrominoe placements")
     {
         Board board{4, 3};
 
@@ -41,11 +41,11 @@ TEST_CASE("solver/board")
         CHECK(board.can_place({{3, 0}, Tetromino::L, Rotation::r270}, get_tetromino_placement_mask(Tetromino::L, Rotation::r270)) == false);
         CHECK(board.can_place({{0, 0}, Tetromino::O, Rotation::r0}, get_tetromino_placement_mask(Tetromino::O, Rotation::r0)));
 
-        board.place({{1, 0}, Tetromino::L, Rotation::r0});
-
         // .L..
         // .L..
         // .LL.
+        board.place({{1, 0}, Tetromino::L, Rotation::r0});
+
         CHECK(board.at({1, 0}) == Tetromino::L);
         CHECK(board.at({1, 1}) == Tetromino::L);
         CHECK(board.at({1, 2}) == Tetromino::L);
@@ -62,11 +62,11 @@ TEST_CASE("solver/board")
         CHECK(board.can_place({{2, 0}, Tetromino::T, Rotation::r90}, get_tetromino_placement_mask(Tetromino::T, Rotation::r90)));
         CHECK(board.can_place({{2, 0}, Tetromino::T, Rotation::r270}, get_tetromino_placement_mask(Tetromino::T, Rotation::r270)) == false);
 
-        board.place({{2, 0}, Tetromino::T, Rotation::r90});
-
         // .L.T
         // .LTT
         // .LLT
+        board.place({{2, 0}, Tetromino::T, Rotation::r90});
+
         CHECK(board.at({3, 0}) == Tetromino::T);
         CHECK(board.at({2, 1}) == Tetromino::T);
         CHECK(board.at({3, 1}) == Tetromino::T);
@@ -81,6 +81,24 @@ TEST_CASE("solver/board")
         CHECK(board.can_place({{2, 0}, Tetromino::L, Rotation::r0}, get_tetromino_placement_mask(Tetromino::L, Rotation::r0)) == false);
         CHECK(board.can_place({{1, 0}, Tetromino::L, Rotation::r270}, get_tetromino_placement_mask(Tetromino::L, Rotation::r270)) == false);
         CHECK(board.can_place({{0, 0}, Tetromino::O, Rotation::r0}, get_tetromino_placement_mask(Tetromino::O, Rotation::r0)) == false);
+
+        // revert placements
+        board.revert_placement({{2, 0}, Tetromino::T, Rotation::r90});
+        CHECK(board.at({1, 0}) == Tetromino::L);
+        CHECK(board.at({1, 1}) == Tetromino::L);
+        CHECK(board.at({1, 2}) == Tetromino::L);
+        CHECK(board.at({2, 2}) == Tetromino::L);
+        CHECK(board.is_empty_square({0, 0}));
+        CHECK(board.is_empty_square({0, 1}));
+        CHECK(board.is_empty_square({0, 2}));
+        CHECK(board.is_empty_square({2, 0}));
+        CHECK(board.is_empty_square({2, 1}));
+        CHECK(board.is_empty_square({3, 0}));
+        CHECK(board.is_empty_square({3, 1}));
+        CHECK(board.is_empty_square({3, 2}));
+
+        board.revert_placement({{1, 0}, Tetromino::L, Rotation::r0});
+        CHECK(board.is_empty());
     }
 
     SECTION("can check if the whole Board is filled or empty")
