@@ -4,6 +4,8 @@
 #include <vector>
 
 #include "../grid/grid.hpp"
+#include "rotation.hpp"
+#include "square.hpp"
 #include "tetrominoes.hpp"
 
 namespace tptps {

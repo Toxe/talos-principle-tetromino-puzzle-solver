@@ -52,7 +52,7 @@ std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetromino
 
 std::vector<Placement> find_all_possible_placements(const Board& board, const Tetromino tetromino)
 {
-    const auto orientations = get_distinct_tetromino_orientations(tetromino);
+    const auto orientations = get_distinct_tetromino_rotations(tetromino);
     std::vector<Placement> placements;
 
     for (const auto rotation : orientations)

@@ -1,4 +1,4 @@
-#include "tetrominoes.hpp"
+#include "rotation.hpp"
 
 #include <cassert>
 #include <stdexcept>
@@ -6,7 +6,7 @@
 
 namespace tptps {
 
-std::vector<Rotation> get_distinct_tetromino_orientations(Tetromino tetromino)
+std::vector<Rotation> get_distinct_tetromino_rotations(Tetromino tetromino)
 {
     assert(tetromino != Tetromino::empty);
 

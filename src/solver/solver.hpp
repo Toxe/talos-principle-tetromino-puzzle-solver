@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "board.hpp"
+#include "rotation.hpp"
 #include "tetrominoes.hpp"
 
 namespace tptps {

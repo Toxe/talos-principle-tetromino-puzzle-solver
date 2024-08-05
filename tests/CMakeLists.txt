@@ -5,9 +5,9 @@ if(BUILD_TESTING)
         grid_gridcell.cpp
         solver_board.cpp
         solver_placement_mask.cpp
+        solver_rotation.cpp
         solver_solver.cpp
         solver_square.cpp
-        solver_tetrominoes.cpp
         utility_duration.cpp
         utility_factorial.cpp
         utility_statistics.cpp

@@ -1,21 +1,21 @@
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/matchers/catch_matchers_all.hpp"
 
-#include "../src/solver/tetrominoes.hpp"
+#include "../src/solver/rotation.hpp"
 
 namespace tptps {
 
-TEST_CASE("solver/tetrominoes")
+TEST_CASE("solver/rotation")
 {
-    SECTION("list all distinct tetromino orientations")
+    SECTION("list all distinct tetromino rotations")
     {
-        const auto orientations_I = get_distinct_tetromino_orientations(Tetromino::I);
-        const auto orientations_O = get_distinct_tetromino_orientations(Tetromino::O);
-        const auto orientations_T = get_distinct_tetromino_orientations(Tetromino::T);
-        const auto orientations_J = get_distinct_tetromino_orientations(Tetromino::J);
-        const auto orientations_L = get_distinct_tetromino_orientations(Tetromino::L);
-        const auto orientations_S = get_distinct_tetromino_orientations(Tetromino::S);
-        const auto orientations_Z = get_distinct_tetromino_orientations(Tetromino::Z);
+        const auto orientations_I = get_distinct_tetromino_rotations(Tetromino::I);
+        const auto orientations_O = get_distinct_tetromino_rotations(Tetromino::O);
+        const auto orientations_T = get_distinct_tetromino_rotations(Tetromino::T);
+        const auto orientations_J = get_distinct_tetromino_rotations(Tetromino::J);
+        const auto orientations_L = get_distinct_tetromino_rotations(Tetromino::L);
+        const auto orientations_S = get_distinct_tetromino_rotations(Tetromino::S);
+        const auto orientations_Z = get_distinct_tetromino_rotations(Tetromino::Z);
 
         CHECK_THAT(orientations_I, Catch::Matchers::SizeIs(2));
         CHECK_THAT(orientations_O, Catch::Matchers::SizeIs(1));

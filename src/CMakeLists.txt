@@ -6,11 +6,12 @@ add_library(lib_tptps
     solver/board.hpp
     solver/placement_mask.cpp
     solver/placement_mask.hpp
+    solver/rotation.cpp
+    solver/rotation.hpp
     solver/solver.cpp
     solver/solver.hpp
     solver/square.cpp
     solver/square.hpp
-    solver/tetrominoes.cpp
     solver/tetrominoes.hpp
     utility/duration.cpp
     utility/duration.hpp
