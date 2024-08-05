@@ -5,6 +5,11 @@
 
 namespace tptps {
 
+bool Board::is_empty() const
+{
+    return std::all_of(grid_.begin(), grid_.end(), [](const auto t) { return t == Tetromino::empty; });
+}
+
 bool Board::is_finished() const
 {
     return std::none_of(grid_.begin(), grid_.end(), [](const auto t) { return t == Tetromino::empty; });

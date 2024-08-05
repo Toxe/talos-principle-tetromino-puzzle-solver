@@ -28,9 +28,10 @@ public:
     void place(Placement placement);
 
     [[nodiscard]] Tetromino at(const Square coords) const { return grid_.at(coords); }
-
-    [[nodiscard]] bool is_finished() const;
     [[nodiscard]] bool is_empty_square(const Square coords) const { return grid_.at(coords) == Tetromino::empty; }
+
+    [[nodiscard]] bool is_empty() const;
+    [[nodiscard]] bool is_finished() const;
 
     [[nodiscard]] std::string print() const;
 

@@ -83,17 +83,32 @@ TEST_CASE("solver/board")
         CHECK(board.can_place({{0, 0}, Tetromino::O, Rotation::r0}, get_tetromino_placement_mask(Tetromino::O, Rotation::r0)) == false);
     }
 
-    SECTION("can check if the whole Board is filled")
+    SECTION("can check if the whole Board is filled or empty")
     {
         Board board{4, 3};
 
+        CHECK(board.is_empty());
+        CHECK(board.is_finished() == false);
+
+        // JJ..
+        // J...
+        // J...
         board.place({{0, 0}, Tetromino::J, Rotation::r180});
+        CHECK(board.is_empty() == false);
+        CHECK(board.is_finished() == false);
+
+        // JJZ.
+        // JZZ.
+        // JZ..
         board.place({{1, 0}, Tetromino::Z, Rotation::r90});
-        board.place({{2, 0}, Tetromino::J, Rotation::r0});
+        CHECK(board.is_empty() == false);
+        CHECK(board.is_finished() == false);
 
         // JJZJ
         // JZZJ
         // JZJJ
+        board.place({{2, 0}, Tetromino::J, Rotation::r0});
+        CHECK(board.is_empty() == false);
         CHECK(board.is_finished());
     }
 
