@@ -179,42 +179,50 @@ TEST_CASE("solver/solver")
         {
             SECTION("Tutorial Puzzle")
             {
-                const auto solution = solve_puzzle(Board{4, 3}, {Tetromino::J, Tetromino::J, Tetromino::Z}, stats);
+                Board board{4, 3};
+                const auto solution = solve_puzzle(board, {Tetromino::J, Tetromino::J, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 3);
+                CHECK(board.is_empty());
             }
 
             SECTION("Gate A")
             {
-                const auto solution = solve_puzzle(Board{4, 4}, {Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L}, stats);
+                Board board{4, 4};
+                const auto solution = solve_puzzle(board, {Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 4);
+                CHECK(board.is_empty());
             }
 
             SECTION("Laser Connector")
             {
-                const auto solution = solve_puzzle(Board{4, 3}, {Tetromino::L, Tetromino::T, Tetromino::T}, stats);
+                Board board{4, 3};
+                const auto solution = solve_puzzle(board, {Tetromino::L, Tetromino::T, Tetromino::T}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 3);
+                CHECK(board.is_empty());
             }
 
             SECTION("Cube")
             {
-                const auto solution = solve_puzzle(Board{4, 4}, {Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
+                Board board{4, 4};
+                const auto solution = solve_puzzle(board, {Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 4);
+                CHECK(board.is_empty());
             }
         }
 
@@ -222,32 +230,38 @@ TEST_CASE("solver/solver")
         {
             SECTION("Gate B")
             {
-                const auto solution = solve_puzzle(Board{4, 5}, {Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z}, stats);
+                Board board{4, 5};
+                const auto solution = solve_puzzle(board, {Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 5);
+                CHECK(board.is_empty());
             }
 
             SECTION("Fan")
             {
-                const auto solution = solve_puzzle(Board{4, 5}, {Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z}, stats);
+                Board board{4, 5};
+                const auto solution = solve_puzzle(board, {Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 5);
+                CHECK(board.is_empty());
             }
 
             SECTION("Recording")
             {
-                const auto solution = solve_puzzle(Board{4, 5}, {Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T}, stats);
+                Board board{4, 5};
+                const auto solution = solve_puzzle(board, {Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 5);
+                CHECK(board.is_empty());
             }
         }
 
@@ -255,12 +269,14 @@ TEST_CASE("solver/solver")
         {
             SECTION("Gate C")
             {
-                const auto solution = solve_puzzle(Board{4, 6}, {Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
+                Board board{4, 6};
+                const auto solution = solve_puzzle(board, {Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}, stats);
 
                 REQUIRE(solution.has_value());
                 CHECK(solution->is_finished());
                 CHECK(solution->width() == 4);
                 CHECK(solution->height() == 6);
+                CHECK(board.is_empty());
             }
         }
     }

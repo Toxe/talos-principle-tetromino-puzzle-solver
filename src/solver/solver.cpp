@@ -6,6 +6,15 @@
 
 namespace tptps {
 
+struct WithPlacedPiece {
+    WithPlacedPiece(Board& board, Placement placement) : board_{board}, placement_{placement} { board_.place(placement); }
+    ~WithPlacedPiece() { board_.revert_placement(placement_); }
+
+private:
+    Board& board_;
+    Placement placement_;
+};
+
 template <typename T>
 std::vector<T> copy_vector_without_element(const std::vector<T>& src, typename std::vector<T>::const_iterator p)
 {
@@ -18,7 +27,7 @@ std::vector<T> copy_vector_without_element(const std::vector<T>& src, typename s
     return dst;
 }
 
-std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoes, SolverStats& stats)
+std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetrominoes, SolverStats& stats)
 {
     for (auto p = tetrominoes.cbegin(); p != tetrominoes.cend(); ++p) {
         const auto placements = find_all_possible_placements(board, *p);
@@ -27,17 +36,13 @@ std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoe
         stats.possible_placements_calculated += placements.size();
 
         for (const auto& placement : placements) {
-            Board tmp_board = board;
-            tmp_board.place(placement);
-
+            const WithPlacedPiece with_owner_of_square{board, placement};
             ++stats.placements_checked;
 
-            if (tmp_board.is_finished())
-                return tmp_board;
+            if (board.is_finished())
+                return board;
 
-            const auto returned_board = solve_puzzle(tmp_board, new_list, stats);
-
-            if (returned_board.has_value())
+            if (const auto returned_board = solve_puzzle(board, new_list, stats); returned_board)
                 return *returned_board;
         }
     }
