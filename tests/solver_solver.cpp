@@ -16,25 +16,18 @@ TEST_CASE("solver/solver")
             const auto placements_r0 = find_possible_placements_for_rotation(board, Tetromino::L, Rotation::r0);
             const auto placements_r90 = find_possible_placements_for_rotation(board, Tetromino::L, Rotation::r90);
 
-            CHECK_THAT(placements_r0, Catch::Matchers::SizeIs(6));
-            CHECK_THAT(placements_r90, Catch::Matchers::SizeIs(6));
+            CHECK_THAT(placements_r0, Catch::Matchers::SizeIs(2));
+            CHECK_THAT(placements_r90, Catch::Matchers::SizeIs(3));
 
             CHECK_THAT(placements_r0, Catch::Matchers::UnorderedRangeEquals(std::vector<Placement>{
                                           {{0, 0}, Tetromino::L, Rotation::r0},
-                                          {{1, 0}, Tetromino::L, Rotation::r0},
-                                          {{2, 0}, Tetromino::L, Rotation::r0},
                                           {{0, 1}, Tetromino::L, Rotation::r0},
-                                          {{1, 1}, Tetromino::L, Rotation::r0},
-                                          {{2, 1}, Tetromino::L, Rotation::r0},
                                       }));
 
             CHECK_THAT(placements_r90, Catch::Matchers::UnorderedRangeEquals(std::vector<Placement>{
                                            {{0, 0}, Tetromino::L, Rotation::r90},
-                                           {{1, 0}, Tetromino::L, Rotation::r90},
                                            {{0, 1}, Tetromino::L, Rotation::r90},
-                                           {{1, 1}, Tetromino::L, Rotation::r90},
                                            {{0, 2}, Tetromino::L, Rotation::r90},
-                                           {{1, 2}, Tetromino::L, Rotation::r90},
                                        }));
         }
 
@@ -107,32 +100,18 @@ TEST_CASE("solver/solver")
 
             const auto placements = find_all_possible_placements(board, Tetromino::L);
 
-            CHECK_THAT(placements, Catch::Matchers::SizeIs(24));
+            CHECK_THAT(placements, Catch::Matchers::SizeIs(10));
             CHECK_THAT(placements, Catch::Matchers::UnorderedRangeEquals(std::vector<Placement>{
                                        {{0, 0}, Tetromino::L, Rotation::r0},
-                                       {{1, 0}, Tetromino::L, Rotation::r0},
-                                       {{2, 0}, Tetromino::L, Rotation::r0},
                                        {{0, 1}, Tetromino::L, Rotation::r0},
-                                       {{1, 1}, Tetromino::L, Rotation::r0},
-                                       {{2, 1}, Tetromino::L, Rotation::r0},
                                        {{0, 0}, Tetromino::L, Rotation::r90},
-                                       {{1, 0}, Tetromino::L, Rotation::r90},
                                        {{0, 1}, Tetromino::L, Rotation::r90},
-                                       {{1, 1}, Tetromino::L, Rotation::r90},
                                        {{0, 2}, Tetromino::L, Rotation::r90},
-                                       {{1, 2}, Tetromino::L, Rotation::r90},
                                        {{0, 0}, Tetromino::L, Rotation::r180},
-                                       {{1, 0}, Tetromino::L, Rotation::r180},
-                                       {{2, 0}, Tetromino::L, Rotation::r180},
                                        {{0, 1}, Tetromino::L, Rotation::r180},
-                                       {{1, 1}, Tetromino::L, Rotation::r180},
-                                       {{2, 1}, Tetromino::L, Rotation::r180},
                                        {{0, 0}, Tetromino::L, Rotation::r270},
-                                       {{1, 0}, Tetromino::L, Rotation::r270},
                                        {{0, 1}, Tetromino::L, Rotation::r270},
-                                       {{1, 1}, Tetromino::L, Rotation::r270},
                                        {{0, 2}, Tetromino::L, Rotation::r270},
-                                       {{1, 2}, Tetromino::L, Rotation::r270},
                                    }));
         }
 

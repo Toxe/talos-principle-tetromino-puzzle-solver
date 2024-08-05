@@ -1,16 +1,28 @@
 #include "solver.hpp"
 
+#include <cassert>
+
 #include "placement_mask.hpp"
 
 namespace tptps {
 
+template <typename T>
+std::vector<T> copy_vector_without_element(const std::vector<T>& src, typename std::vector<T>::const_iterator p)
+{
+    assert(!src.empty());
+
+    std::vector<T> dst(src.size() - 1);
+    const auto dst_end = std::copy(src.cbegin(), p, dst.begin());
+    std::copy(p + 1, src.cend(), dst_end);
+
+    return dst;
+}
+
 std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoes, SolverStats& stats)
 {
-    while (!tetrominoes.empty()) {
-        const Tetromino t = tetrominoes.back();
-        tetrominoes.pop_back();
-
-        const auto placements = find_all_possible_placements(board, t);
+    for (auto p = tetrominoes.cbegin(); p != tetrominoes.cend(); ++p) {
+        const auto placements = find_all_possible_placements(board, *p);
+        const std::vector<Tetromino> new_list = copy_vector_without_element(tetrominoes, p);
 
         stats.possible_placements_calculated += placements.size();
 
@@ -23,7 +35,7 @@ std::optional<Board> solve_puzzle(Board board, std::vector<Tetromino> tetrominoe
             if (tmp_board.is_finished())
                 return tmp_board;
 
-            const auto returned_board = solve_puzzle(tmp_board, tetrominoes, stats);
+            const auto returned_board = solve_puzzle(tmp_board, new_list, stats);
 
             if (returned_board.has_value())
                 return *returned_board;
@@ -46,15 +58,30 @@ std::vector<Placement> find_all_possible_placements(const Board& board, const Te
 
 std::vector<Placement> find_possible_placements_for_rotation(const Board& board, const Tetromino tetromino, const Rotation rotation)
 {
-    std::vector<Placement> placements;
     const auto mask = get_tetromino_placement_mask(tetromino, rotation);
+    std::vector<Placement> placements;
 
-    for (Square::coordinates_type y = 0; y <= board.height() - mask.height(); ++y) {
+    if (board.height() > board.width()) {
         for (Square::coordinates_type x = 0; x <= board.width() - mask.width(); ++x) {
-            const Placement placement{{x, y}, tetromino, rotation};
+            for (Square::coordinates_type y = 0; y <= board.height() - mask.height(); ++y) {
+                const Placement placement{{x, y}, tetromino, rotation};
 
-            if (board.can_place(placement, mask))
-                placements.push_back(placement);
+                if (board.can_place(placement, mask)) {
+                    placements.push_back(placement);
+                    break;
+                }
+            }
+        }
+    } else {
+        for (Square::coordinates_type y = 0; y <= board.height() - mask.height(); ++y) {
+            for (Square::coordinates_type x = 0; x <= board.width() - mask.width(); ++x) {
+                const Placement placement{{x, y}, tetromino, rotation};
+
+                if (board.can_place(placement, mask)) {
+                    placements.push_back(placement);
+                    break;
+                }
+            }
         }
     }
 
