@@ -1,6 +1,6 @@
 #include "catch2/catch_test_macros.hpp"
 
-#include "../src/utility/factorial.hpp"
+#include "../src/lib/utility/factorial.hpp"
 
 namespace tptps {
 

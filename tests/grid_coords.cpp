@@ -5,7 +5,7 @@
 #include "fmt/core.h"
 #include "fmt/format.h"
 
-#include "../src/grid/coords.hpp"
+#include "../src/lib/grid/coords.hpp"
 
 namespace tptps {
 

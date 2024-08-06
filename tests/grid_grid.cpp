@@ -6,7 +6,7 @@
 #include "fmt/core.h"
 #include "fmt/format.h"
 
-#include "../src/grid/grid.hpp"
+#include "../src/lib/grid/grid.hpp"
 
 namespace tptps {
 

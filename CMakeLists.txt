@@ -21,5 +21,7 @@ include(cmake/Sanitizers.cmake)
 
 find_package(fmt CONFIG REQUIRED)
 
-add_subdirectory(src)
+add_subdirectory(src/lib)
+add_subdirectory(src/performance)
+add_subdirectory(src/tptps)
 add_subdirectory(tests)

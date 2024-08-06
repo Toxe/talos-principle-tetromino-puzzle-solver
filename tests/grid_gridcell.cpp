@@ -1,6 +1,6 @@
 #include "catch2/catch_test_macros.hpp"
 
-#include "../src/grid/grid.hpp"
+#include "../src/lib/grid/grid.hpp"
 
 namespace tptps {
 

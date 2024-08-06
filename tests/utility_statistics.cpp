@@ -5,7 +5,7 @@
 #include "catch2/catch_approx.hpp"
 #include "catch2/catch_test_macros.hpp"
 
-#include "../src/utility/statistics.hpp"
+#include "../src/lib/utility/statistics.hpp"
 
 namespace tptps {
 
