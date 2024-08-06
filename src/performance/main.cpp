@@ -18,7 +18,7 @@ using namespace tptps;
 
 [[noreturn]] void die(const std::string_view msg)
 {
-    fmt::print("error, {}\n", msg);
+    fmt::print(stderr, "error, {}\n", msg);
     std::exit(1);
 }
 
