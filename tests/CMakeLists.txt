@@ -1,17 +1,17 @@
 if(BUILD_TESTING)
     add_executable(tests
-        grid_coords.cpp
-        grid_grid.cpp
-        grid_gridcell.cpp
-        solver_board.cpp
-        solver_placement.cpp
-        solver_placement_mask.cpp
-        solver_rotation.cpp
-        solver_solver.cpp
-        solver_square.cpp
-        utility_duration.cpp
-        utility_factorial.cpp
-        utility_statistics.cpp
+        lib/grid/coords.cpp
+        lib/grid/grid.cpp
+        lib/grid/gridcell.cpp
+        lib/solver/board.cpp
+        lib/solver/placement.cpp
+        lib/solver/placement_mask.cpp
+        lib/solver/rotation.cpp
+        lib/solver/solver.cpp
+        lib/solver/square.cpp
+        lib/utility/duration.cpp
+        lib/utility/factorial.cpp
+        lib/utility/statistics.cpp
     )
 
     set_target_properties(tests PROPERTIES CXX_EXTENSIONS OFF)
@@ -20,7 +20,7 @@ if(BUILD_TESTING)
     target_link_options(tests PRIVATE ${SANITIZER_LINK_OPTIONS})
     target_link_libraries(tests PRIVATE ${SANITIZER_LINK_LIBRARIES} lib_tptps Catch2::Catch2WithMain)
 
-    set_target_properties(tests PROPERTIES FOLDER "TPTPS")
+    set_target_properties(tests PROPERTIES FOLDER "Tests")
     get_target_property(tests_sources tests SOURCES)
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "Sources" FILES ${tests_sources})
 

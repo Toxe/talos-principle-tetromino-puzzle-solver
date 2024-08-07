@@ -1,6 +1,6 @@
 #include "catch2/catch_test_macros.hpp"
 
-#include "../src/lib/solver/placement_mask.hpp"
+#include "../../src/lib/solver/placement_mask.hpp"
 
 namespace tptps {
 
