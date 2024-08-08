@@ -8,11 +8,11 @@ namespace tptps {
 
 std::string print_duration(const std::chrono::nanoseconds dur)
 {
-    if (dur < 1000ns)
+    if (dur < 10000ns)
         return fmt::format("{:.3f} ns", std::chrono::duration_cast<std::chrono::duration<float, std::nano>>(dur).count());
-    else if (dur < 1000us)
+    else if (dur < 10000us)
         return fmt::format("{:.3f} μs", std::chrono::duration_cast<std::chrono::duration<float, std::micro>>(dur).count());
-    else if (dur < 1000ms)
+    else if (dur < 10000ms)
         return fmt::format("{:.3f} ms", std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(dur).count());
     else
         return fmt::format("{:.3f} s", std::chrono::duration_cast<std::chrono::duration<float>>(dur).count());
