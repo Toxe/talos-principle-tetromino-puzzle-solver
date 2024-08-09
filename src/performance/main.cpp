@@ -2,6 +2,7 @@
 #include <array>
 #include <chrono>
 #include <cstdlib>
+#include <locale>
 #include <string>
 #include <string_view>
 #include <tuple>
@@ -14,6 +15,7 @@
 #include "utility/duration.hpp"
 #include "utility/factorial.hpp"
 #include "utility/statistics.hpp"
+#include "utility/str.hpp"
 
 using namespace std::literals::chrono_literals;
 using namespace tptps;
@@ -59,17 +61,12 @@ uint64_t count_tetromino_permutations(std::vector<Tetromino> tetrominoes)
     return n;
 }
 
-SolverStats solve(const Square size, const std::vector<Tetromino>& tetrominoes)
+void print_header(const std::string_view section, const std::string_view name, const Square size, const uint64_t max_runs, const std::vector<Tetromino>& tetrominoes)
 {
-    SolverStats stats;
-    Board board{size.x, size.y};
+    const auto header = fmt::format("{}, {}: {}, {}, {} permutations", section, name, print_square(size), dump_tetrominoes(tetrominoes), max_runs);
 
-    const auto solution = solve_puzzle(board, tetrominoes, stats);
-
-    if (!solution || !solution->is_filled())
-        die(fmt::format("no solution found for: \"{}\"", dump_tetrominoes(tetrominoes)));
-
-    return stats;
+    fmt::print("{}\n", header);
+    fmt::print("{}\n", std::string(str_mb_length(header), '-'));
 }
 
 void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view section, const std::string_view name, const Square size, std::vector<Tetromino> tetrominoes)
@@ -78,38 +75,49 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
     uint64_t run_count = 0;
 
     std::vector<std::chrono::nanoseconds::rep> durations;
-    std::vector<uint64_t> placements_checked;
-    std::vector<uint64_t> possible_placements_calculated;
+    std::vector<uint64_t> function_called;
+    std::vector<uint64_t> placements_calculated;
 
     std::sort(tetrominoes.begin(), tetrominoes.end());
+
+    print_header(section, name, size, max_runs, tetrominoes);
 
     const auto total_time_begin = std::chrono::steady_clock::now();
 
     do {
-        const auto t0 = std::chrono::steady_clock::now();
-        const auto stats = solve(size, tetrominoes);
-        const auto t1 = std::chrono::steady_clock::now();
-        const auto dur = t1 - t0;
+        SolverStatus status{fmt::format("[{}/{} | {}]", run_count, max_runs, dump_tetrominoes(tetrominoes))};
+        Board board{size.x, size.y};
+
+        const auto solution = solve_puzzle(board, tetrominoes, status);
+
+        if (!solution || !solution->is_filled())
+            die(fmt::format("no solution found for: \"{}\"", dump_tetrominoes(tetrominoes)));
+
+        status.print_log_message("\n");
 
         ++run_count;
 
-        durations.push_back(dur.count());
-        placements_checked.push_back(stats.placements_checked);
-        possible_placements_calculated.push_back(stats.possible_placements_calculated);
+        durations.push_back(status.duration().count());
+        function_called.push_back(status.function_called());
+        placements_calculated.push_back(status.placements_calculated());
 
-        csv_measurements.write(section, name, print_square(size), run_count, max_runs, dump_tetrominoes(tetrominoes), print_duration(dur), stats.placements_checked, stats.possible_placements_calculated);
+        csv_measurements.write(section, name, print_square(size), run_count, max_runs, dump_tetrominoes(tetrominoes), print_duration(status.duration()), status.function_called(), status.placements_calculated());
 
         if (std::chrono::steady_clock::now() - total_time_begin >= 10s)
             break;
     } while (std::next_permutation(tetrominoes.begin(), tetrominoes.end()));
 
+    fmt::print("\n\n");
+
     const auto total_time_end = std::chrono::steady_clock::now();
 
-    csv_summary.write(section, name, print_square(size), run_count, max_runs, print_duration(total_time_end - total_time_begin), dump_csv_stats(durations), dump_csv_stats(placements_checked), dump_csv_stats(possible_placements_calculated));
+    csv_summary.write(section, name, print_square(size), run_count, max_runs, print_duration(total_time_end - total_time_begin), dump_csv_stats(durations), dump_csv_stats(function_called), dump_csv_stats(placements_calculated));
 }
 
 int main(int argc, const char* argv[])
 {
+    std::setlocale(LC_ALL, "en_US.utf8");
+
     const CommandLine cli({argv, static_cast<std::size_t>(argc)});
 
     CSVFile csv_measurements{cli.measurements_filename()};
@@ -123,7 +131,7 @@ int main(int argc, const char* argv[])
         "Max Runs",
         "Tetrominoes",
         "Duration",
-        "Placements Checked",
+        "Function Called",
         "Placements Calculated");
 
     csv_summary.write(
@@ -137,10 +145,10 @@ int main(int argc, const char* argv[])
         "Duration (max)",
         "Duration (mean)",
         "Duration (median)",
-        "Placements Checked (min)",
-        "Placements Checked (max)",
-        "Placements Checked (mean)",
-        "Placements Checked (median)",
+        "Function Called (min)",
+        "Function Called (max)",
+        "Function Called (mean)",
+        "Function Called (median)",
         "Placements Calculated (min)",
         "Placements Calculated (max)",
         "Placements Calculated (mean)",

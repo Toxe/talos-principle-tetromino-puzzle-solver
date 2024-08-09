@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <cassert>
 
+#include "fmt/core.h"
+
+#include "../utility/duration.hpp"
 #include "placement_mask.hpp"
 
 namespace tptps {
@@ -28,22 +31,24 @@ std::vector<T> copy_vector_without_element(const std::vector<T>& src, typename s
     return dst;
 }
 
-std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetrominoes, SolverStats& stats)
+std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetrominoes, SolverStatus& status)
 {
+    status.add_function_called();
+
     for (auto p = tetrominoes.cbegin(); p != tetrominoes.cend(); ++p) {
         const auto placements = find_all_possible_placements(board, *p);
         const std::vector<Tetromino> new_list = copy_vector_without_element(tetrominoes, p);
-
-        stats.possible_placements_calculated += placements.size();
+        status.add_placements_calculated(placements.size());
 
         for (const auto& placement : placements) {
             const WithPlacedPiece with_owner_of_square{board, placement};
-            ++stats.placements_checked;
 
-            if (board.is_filled())
+            if (board.is_filled()) {
+                status.stop();
                 return board;
+            }
 
-            if (const auto returned_board = solve_puzzle(board, new_list, stats); returned_board)
+            if (const auto returned_board = solve_puzzle(board, new_list, status); returned_board)
                 return *returned_board;
         }
     }

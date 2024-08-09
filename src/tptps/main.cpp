@@ -9,11 +9,11 @@ using namespace tptps;
 
 int main()
 {
-    SolverStats stats;
+    SolverStatus status;
     Board board{4, 6};
 
     const auto t0 = std::chrono::steady_clock::now();
-    const auto solution = solve_puzzle(board, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}}, stats);
+    const auto solution = solve_puzzle(board, {{Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z}}, status);
     const auto t1 = std::chrono::steady_clock::now();
 
     if (!solution) {

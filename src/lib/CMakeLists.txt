@@ -12,6 +12,8 @@ add_library(lib_tptps
     solver/rotation.hpp
     solver/solver.cpp
     solver/solver.hpp
+    solver/solver_status.cpp
+    solver/solver_status.hpp
     solver/square.cpp
     solver/square.hpp
     solver/tetrominoes.hpp

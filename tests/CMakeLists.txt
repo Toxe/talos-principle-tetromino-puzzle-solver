@@ -10,6 +10,7 @@ if(BUILD_TESTING)
         lib/solver/placement_mask.cpp
         lib/solver/rotation.cpp
         lib/solver/solver.cpp
+        lib/solver/solver_status.cpp
         lib/solver/square.cpp
         lib/utility/duration.cpp
         lib/utility/factorial.cpp
