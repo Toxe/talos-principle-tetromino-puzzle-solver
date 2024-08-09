@@ -14,6 +14,7 @@ if(BUILD_TESTING)
         lib/utility/duration.cpp
         lib/utility/factorial.cpp
         lib/utility/statistics.cpp
+        lib/utility/str.cpp
         performance/cli.cpp
         performance/csv.cpp
     )

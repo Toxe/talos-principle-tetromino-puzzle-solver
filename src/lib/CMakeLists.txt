@@ -20,6 +20,8 @@ add_library(lib_tptps
     utility/factorial.cpp
     utility/factorial.hpp
     utility/statistics.hpp
+    utility/str.cpp
+    utility/str.hpp
 )
 
 set_target_properties(lib_tptps PROPERTIES CXX_EXTENSIONS OFF)
