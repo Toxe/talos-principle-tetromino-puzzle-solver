@@ -11,6 +11,7 @@
 
 #include "cli.hpp"
 #include "csv.hpp"
+#include "summary.hpp"
 #include "solver/solver.hpp"
 #include "utility/duration.hpp"
 #include "utility/factorial.hpp"
@@ -61,12 +62,17 @@ uint64_t count_tetromino_permutations(std::vector<Tetromino> tetrominoes)
     return n;
 }
 
+std::chrono::nanoseconds calc_total_duration(const std::vector<std::chrono::nanoseconds::rep>& durations)
+{
+    return std::chrono::nanoseconds{std::accumulate(durations.begin(), durations.end(), std::chrono::nanoseconds::rep{0})};
+}
+
 void print_header(const std::string_view section, const std::string_view name, const Square size, const uint64_t max_runs, const std::vector<Tetromino>& tetrominoes)
 {
     const auto header = fmt::format("{}, {}: {}, {}, {} permutations", section, name, print_square(size), dump_tetrominoes(tetrominoes), max_runs);
 
     fmt::print("{}\n", header);
-    fmt::print("{}\n", std::string(str_mb_length(header), '-'));
+    fmt::print("{}\n", std::string(str_mb_length(header), '='));
 }
 
 void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view section, const std::string_view name, const Square size, std::vector<Tetromino> tetrominoes)
@@ -82,9 +88,11 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
 
     print_header(section, name, size, max_runs, tetrominoes);
 
-    const auto total_time_begin = std::chrono::steady_clock::now();
+    const auto time_begin = std::chrono::steady_clock::now();
 
     do {
+        ++run_count;
+
         SolverStatus status{fmt::format("[{}/{} | {}]", run_count, max_runs, dump_tetrominoes(tetrominoes))};
         Board board{size.x, size.y};
 
@@ -95,23 +103,23 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
 
         status.print_log_message("\n");
 
-        ++run_count;
-
         durations.push_back(status.duration().count());
         function_called.push_back(status.function_called());
         placements_calculated.push_back(status.placements_calculated());
 
         csv_measurements.write(section, name, print_square(size), run_count, max_runs, dump_tetrominoes(tetrominoes), print_duration(status.duration()), status.function_called(), status.placements_calculated());
 
-        if (std::chrono::steady_clock::now() - total_time_begin >= 10s)
+        if (std::chrono::steady_clock::now() - time_begin >= 10s)
             break;
     } while (std::next_permutation(tetrominoes.begin(), tetrominoes.end()));
 
-    fmt::print("\n\n");
+    const auto total_duration = calc_total_duration(durations);
 
-    const auto total_time_end = std::chrono::steady_clock::now();
+    fmt::print("\n");
+    print_summary(total_duration, durations, function_called, placements_calculated);
+    fmt::print("\n\n\n");
 
-    csv_summary.write(section, name, print_square(size), run_count, max_runs, print_duration(total_time_end - total_time_begin), dump_csv_stats(durations), dump_csv_stats(function_called), dump_csv_stats(placements_calculated));
+    csv_summary.write(section, name, print_square(size), run_count, max_runs, print_duration(total_duration), dump_csv_stats(durations), dump_csv_stats(function_called), dump_csv_stats(placements_calculated));
 }
 
 int main(int argc, const char* argv[])

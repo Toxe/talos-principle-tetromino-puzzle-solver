@@ -3,6 +3,8 @@ add_library(lib_performance
     cli.cpp
     cli.hpp
     csv.hpp
+    summary.cpp
+    summary.hpp
 )
 
 set_target_properties(lib_performance PROPERTIES CXX_EXTENSIONS OFF)
