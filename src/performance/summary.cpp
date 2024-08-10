@@ -72,7 +72,7 @@ std::vector<int> calc_column_sizes(const std::vector<std::vector<std::string>>& 
     return column_sizes;
 }
 
-void print_summary(const std::chrono::nanoseconds total_duration, const std::vector<std::chrono::nanoseconds::rep>& durations, const std::vector<uint64_t>& function_called, const std::vector<uint64_t>& placements_calculated)
+void print_summary(const std::chrono::nanoseconds total_duration, const std::vector<uint64_t>& durations, const std::vector<uint64_t>& function_called, const std::vector<uint64_t>& placements_calculated)
 {
     const auto mm_dur = std::minmax_element(durations.begin(), durations.end());
     const auto mm_func = std::minmax_element(function_called.begin(), function_called.end());

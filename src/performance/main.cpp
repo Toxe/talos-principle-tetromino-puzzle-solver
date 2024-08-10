@@ -11,8 +11,8 @@
 
 #include "cli.hpp"
 #include "csv.hpp"
-#include "summary.hpp"
 #include "solver/solver.hpp"
+#include "summary.hpp"
 #include "utility/duration.hpp"
 #include "utility/factorial.hpp"
 #include "utility/statistics.hpp"
@@ -43,12 +43,6 @@ std::string dump_csv_stats(const std::vector<uint64_t>& values)
     return fmt::format("{},{},{},{}", *mm.first, *mm.second, mean(values), median(values));
 }
 
-std::string dump_csv_stats(const std::vector<std::chrono::nanoseconds::rep>& values)
-{
-    const auto mm = std::minmax_element(values.begin(), values.end());
-    return fmt::format("{},{},{},{}", print_duration(std::chrono::nanoseconds{*mm.first}), print_duration(std::chrono::nanoseconds{*mm.second}), print_duration(std::chrono::nanoseconds{mean(values)}), print_duration(std::chrono::nanoseconds{median(values)}));
-}
-
 uint64_t count_tetromino_permutations(std::vector<Tetromino> tetrominoes)
 {
     uint64_t n = 0;
@@ -62,9 +56,9 @@ uint64_t count_tetromino_permutations(std::vector<Tetromino> tetrominoes)
     return n;
 }
 
-std::chrono::nanoseconds calc_total_duration(const std::vector<std::chrono::nanoseconds::rep>& durations)
+std::chrono::nanoseconds calc_total_duration(const std::vector<uint64_t>& durations)
 {
-    return std::chrono::nanoseconds{std::accumulate(durations.begin(), durations.end(), std::chrono::nanoseconds::rep{0})};
+    return std::chrono::nanoseconds{std::accumulate(durations.begin(), durations.end(), uint64_t{0})};
 }
 
 void print_header(const std::string_view section, const std::string_view name, const Square size, const uint64_t max_runs, const std::vector<Tetromino>& tetrominoes)
@@ -80,7 +74,7 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
     const uint64_t max_runs = count_tetromino_permutations(tetrominoes);
     uint64_t run_count = 0;
 
-    std::vector<std::chrono::nanoseconds::rep> durations;
+    std::vector<uint64_t> durations;
     std::vector<uint64_t> function_called;
     std::vector<uint64_t> placements_calculated;
 
@@ -107,7 +101,7 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
         function_called.push_back(status.function_called());
         placements_calculated.push_back(status.placements_calculated());
 
-        csv_measurements.write(section, name, print_square(size), run_count, max_runs, dump_tetrominoes(tetrominoes), print_duration(status.duration()), status.function_called(), status.placements_calculated());
+        csv_measurements.write(section, name, print_square(size), run_count, max_runs, dump_tetrominoes(tetrominoes), status.duration().count(), status.function_called(), status.placements_calculated());
 
         if (std::chrono::steady_clock::now() - time_begin >= 10s)
             break;
@@ -119,7 +113,7 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
     print_summary(total_duration, durations, function_called, placements_calculated);
     fmt::print("\n\n\n");
 
-    csv_summary.write(section, name, print_square(size), run_count, max_runs, print_duration(total_duration), dump_csv_stats(durations), dump_csv_stats(function_called), dump_csv_stats(placements_calculated));
+    csv_summary.write(section, name, print_square(size), run_count, max_runs, total_duration.count(), dump_csv_stats(durations), dump_csv_stats(function_called), dump_csv_stats(placements_calculated));
 }
 
 int main(int argc, const char* argv[])
