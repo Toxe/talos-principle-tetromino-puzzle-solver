@@ -103,7 +103,7 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
 
         csv_measurements.write(section, name, print_square(size), run_count, max_runs, dump_tetrominoes(tetrominoes), status.duration().count(), status.function_called(), status.placements_calculated());
 
-        if (std::chrono::steady_clock::now() - time_begin >= 10s)
+        if (std::chrono::steady_clock::now() - time_begin >= 30s)
             break;
     } while (std::next_permutation(tetrominoes.begin(), tetrominoes.end()));
 
