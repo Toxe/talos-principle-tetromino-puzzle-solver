@@ -24,6 +24,7 @@ CommandLine::CommandLine(std::span<const char*> args)
 
     CLI::App app{description};
     app.add_option("filename", filename_, "CSV output filename (without \".csv\")")->required();
+    app.add_flag("-q,--quiet", quiet_, "suppress progress output");
 
     try {
         app.parse(static_cast<int>(args.size()), args.data());

@@ -69,7 +69,7 @@ void print_header(const std::string_view section, const std::string_view name, c
     fmt::print("{}\n", std::string(str_mb_length(header), '='));
 }
 
-void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view section, const std::string_view name, const Square size, std::vector<Tetromino> tetrominoes)
+void run(CSVFile& csv_measurements, CSVFile& csv_summary, const bool show_progress, const std::string_view section, const std::string_view name, const Square size, std::vector<Tetromino> tetrominoes)
 {
     const uint64_t max_runs = count_tetromino_permutations(tetrominoes);
     uint64_t run_count = 0;
@@ -87,7 +87,7 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const std::string_view
     do {
         ++run_count;
 
-        SolverStatus status{fmt::format("[{}/{} | {}]", run_count, max_runs, dump_tetrominoes(tetrominoes))};
+        SolverStatus status{fmt::format("[{}/{} | {}]", run_count, max_runs, dump_tetrominoes(tetrominoes)), show_progress};
         Board board{size.x, size.y};
 
         const auto solution = solve_puzzle(board, tetrominoes, status);
@@ -156,21 +156,21 @@ int main(int argc, const char* argv[])
         "Placements Calculated (mean)",
         "Placements Calculated (median)");
 
-    run(csv_measurements, csv_summary, "World Hub A", "Tutorial Puzzle", {4, 3}, {Tetromino::J, Tetromino::J, Tetromino::Z});
-    run(csv_measurements, csv_summary, "World Hub A", "Gate A", {4, 4}, {Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L});
-    run(csv_measurements, csv_summary, "World Hub A", "Laser Connector", {4, 3}, {Tetromino::L, Tetromino::T, Tetromino::T});
-    run(csv_measurements, csv_summary, "World Hub A", "Cube", {4, 4}, {Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z});
-    run(csv_measurements, csv_summary, "World Hub B", "Gate B", {4, 5}, {Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z});
-    run(csv_measurements, csv_summary, "World Hub B", "Fan", {4, 5}, {Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z});
-    run(csv_measurements, csv_summary, "World Hub B", "Recording", {4, 5}, {Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T});
-    run(csv_measurements, csv_summary, "World Hub C", "Gate C", {4, 6}, {Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z});
-    run(csv_measurements, csv_summary, "World Hub C", "Platform", {4, 6}, {Tetromino::O, Tetromino::I, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T});
-    // run(csv_measurements, csv_summary, "Messenger Island A", "Cube", {6, 6}, {Tetromino::L, Tetromino::L, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::O, Tetromino::O, Tetromino::I, Tetromino::S});  // long
-    run(csv_measurements, csv_summary, "Messenger Island A", "Messenger Tomb", {4, 5}, {Tetromino::I, Tetromino::O, Tetromino::O, Tetromino::J, Tetromino::J});
-    // run(csv_measurements, csv_summary, "Messenger Island B", "Laser Connector 1", {4, 10}, {Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::Z, Tetromino::Z, Tetromino::S, Tetromino::J, Tetromino::I, Tetromino::I});  // long
-    run(csv_measurements, csv_summary, "Messenger Island B", "Laser Connector 2", {7, 4}, {Tetromino::I, Tetromino::I, Tetromino::S, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T});
-    run(csv_measurements, csv_summary, "Messenger Island C", "Blue Laser", {7, 4}, {Tetromino::I, Tetromino::Z, Tetromino::Z, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::J});
-    // run(csv_measurements, csv_summary, "Messenger Island C", "Messenger Tomb", {6, 6}, {Tetromino::O, Tetromino::O, Tetromino::L, Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::I, Tetromino::Z, Tetromino::Z});
-    // run(csv_measurements, csv_summary, "World Hub A", "Star Gate A", {8, 5}, {Tetromino::L, Tetromino::J, Tetromino::Z, Tetromino::Z, Tetromino::S, Tetromino::S, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::T});
-    // run(csv_measurements, csv_summary, "World Hub B", "Star Gate B", {8, 5}, {Tetromino::I, Tetromino::I, Tetromino::O, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::J, Tetromino::L, Tetromino::L});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub A", "Tutorial Puzzle", {4, 3}, {Tetromino::J, Tetromino::J, Tetromino::Z});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub A", "Gate A", {4, 4}, {Tetromino::I, Tetromino::Z, Tetromino::J, Tetromino::L});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub A", "Laser Connector", {4, 3}, {Tetromino::L, Tetromino::T, Tetromino::T});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub A", "Cube", {4, 4}, {Tetromino::L, Tetromino::T, Tetromino::T, Tetromino::Z});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub B", "Gate B", {4, 5}, {Tetromino::I, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::Z});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub B", "Fan", {4, 5}, {Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::S, Tetromino::Z});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub B", "Recording", {4, 5}, {Tetromino::S, Tetromino::Z, Tetromino::J, Tetromino::T, Tetromino::T});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub C", "Gate C", {4, 6}, {Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::Z});
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub C", "Platform", {4, 6}, {Tetromino::O, Tetromino::I, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T});
+    run(csv_measurements, csv_summary, !cli.quiet(), "Messenger Island A", "Cube", {6, 6}, {Tetromino::L, Tetromino::L, Tetromino::J, Tetromino::T, Tetromino::T, Tetromino::O, Tetromino::O, Tetromino::I, Tetromino::S});
+    run(csv_measurements, csv_summary, !cli.quiet(), "Messenger Island A", "Messenger Tomb", {4, 5}, {Tetromino::I, Tetromino::O, Tetromino::O, Tetromino::J, Tetromino::J});
+    run(csv_measurements, csv_summary, !cli.quiet(), "Messenger Island B", "Laser Connector 1", {4, 10}, {Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::Z, Tetromino::Z, Tetromino::S, Tetromino::J, Tetromino::I, Tetromino::I});
+    run(csv_measurements, csv_summary, !cli.quiet(), "Messenger Island B", "Laser Connector 2", {7, 4}, {Tetromino::I, Tetromino::I, Tetromino::S, Tetromino::Z, Tetromino::L, Tetromino::T, Tetromino::T});
+    run(csv_measurements, csv_summary, !cli.quiet(), "Messenger Island C", "Blue Laser", {7, 4}, {Tetromino::I, Tetromino::Z, Tetromino::Z, Tetromino::T, Tetromino::T, Tetromino::L, Tetromino::J});
+    run(csv_measurements, csv_summary, !cli.quiet(), "Messenger Island C", "Messenger Tomb", {6, 6}, {Tetromino::O, Tetromino::O, Tetromino::L, Tetromino::L, Tetromino::J, Tetromino::J, Tetromino::I, Tetromino::Z, Tetromino::Z});
+    // run(csv_measurements, csv_summary, !cli.quiet(), "World Hub A", "Star Gate A", {8, 5}, {Tetromino::L, Tetromino::J, Tetromino::Z, Tetromino::Z, Tetromino::S, Tetromino::S, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::T});  // long
+    run(csv_measurements, csv_summary, !cli.quiet(), "World Hub B", "Star Gate B", {8, 5}, {Tetromino::I, Tetromino::I, Tetromino::O, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::T, Tetromino::J, Tetromino::L, Tetromino::L});
 }
