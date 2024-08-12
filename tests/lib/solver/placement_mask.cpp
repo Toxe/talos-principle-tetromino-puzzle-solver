@@ -6,6 +6,33 @@ namespace tptps {
 
 TEST_CASE("solver/placement_mask")
 {
+    SECTION("can set and test mask bits")
+    {
+        PlacementMask mask{3, 2};
+
+        CHECK(mask.width() == 3);
+        CHECK(mask.height() == 2);
+
+        CHECK(mask.at({0, 0}) == false);
+        CHECK(mask.at({1, 0}) == false);
+        CHECK(mask.at({2, 0}) == false);
+        CHECK(mask.at({0, 1}) == false);
+        CHECK(mask.at({1, 1}) == false);
+        CHECK(mask.at({2, 1}) == false);
+
+        mask.set({0, 0});
+        mask.set({1, 0});
+        mask.set({2, 0});
+        mask.set({1, 1});
+
+        CHECK(mask.at({0, 0}));
+        CHECK(mask.at({1, 0}));
+        CHECK(mask.at({2, 0}));
+        CHECK(mask.at({0, 1}) == false);
+        CHECK(mask.at({1, 1}));
+        CHECK(mask.at({2, 1}) == false);
+    }
+
     SECTION("create a placement mask from a string")
     {
         SECTION("L")
@@ -19,12 +46,12 @@ TEST_CASE("solver/placement_mask")
             CHECK(mask.width() == 2);
             CHECK(mask.height() == 3);
 
-            CHECK(mask.at({0, 0}) != 0);
-            CHECK(mask.at({1, 0}) == 0);
-            CHECK(mask.at({0, 1}) != 0);
-            CHECK(mask.at({1, 1}) == 0);
-            CHECK(mask.at({0, 2}) != 0);
-            CHECK(mask.at({1, 2}) != 0);
+            CHECK(mask.at({0, 0}));
+            CHECK(mask.at({1, 0}) == false);
+            CHECK(mask.at({0, 1}));
+            CHECK(mask.at({1, 1}) == false);
+            CHECK(mask.at({0, 2}));
+            CHECK(mask.at({1, 2}));
         }
 
         SECTION("I")
@@ -36,10 +63,10 @@ TEST_CASE("solver/placement_mask")
             CHECK(mask.width() == 4);
             CHECK(mask.height() == 1);
 
-            CHECK(mask.at({0, 0}) != 0);
-            CHECK(mask.at({1, 0}) != 0);
-            CHECK(mask.at({2, 0}) != 0);
-            CHECK(mask.at({3, 0}) != 0);
+            CHECK(mask.at({0, 0}));
+            CHECK(mask.at({1, 0}));
+            CHECK(mask.at({2, 0}));
+            CHECK(mask.at({3, 0}));
         }
 
         SECTION("T")
@@ -52,12 +79,12 @@ TEST_CASE("solver/placement_mask")
             CHECK(mask.width() == 3);
             CHECK(mask.height() == 2);
 
-            CHECK(mask.at({0, 0}) == 0);
-            CHECK(mask.at({1, 0}) != 0);
-            CHECK(mask.at({2, 0}) == 0);
-            CHECK(mask.at({0, 1}) != 0);
-            CHECK(mask.at({1, 1}) != 0);
-            CHECK(mask.at({2, 1}) != 0);
+            CHECK(mask.at({0, 0}) == false);
+            CHECK(mask.at({1, 0}));
+            CHECK(mask.at({2, 0}) == false);
+            CHECK(mask.at({0, 1}));
+            CHECK(mask.at({1, 1}));
+            CHECK(mask.at({2, 1}));
         }
     }
 

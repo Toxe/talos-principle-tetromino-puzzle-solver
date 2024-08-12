@@ -6,6 +6,28 @@
 
 namespace tptps {
 
+PlacementMask::PlacementMask(const int width, const int height)
+{
+    assert(width >= 0 && width <= 4);
+    assert(height >= 0 && height <= 4);
+    assert(width * height > 0);
+
+    width_ = static_cast<int16_t>(width);
+    height_ = static_cast<int16_t>(height);
+}
+
+std::size_t PlacementMask::bit(const Square square) const
+{
+    assert(square.x >= 0 && square.x < width_);
+    assert(square.y >= 0 && square.y < height_);
+
+    const std::size_t pos = square.x + square.y * width_;
+
+    assert(pos < width_ * height_);
+
+    return pos;
+}
+
 PlacementMask placement_mask_from_string(const std::vector<std::string_view>& data)
 {
     assert(data.size() > 0);
@@ -16,13 +38,14 @@ PlacementMask placement_mask_from_string(const std::vector<std::string_view>& da
     assert(width > 0);
 
     PlacementMask mask{width, height};
-    int row = 0;
+    Square::coordinates_type row = 0;
 
     for (const auto& line : data) {
         assert(line.size() == static_cast<std::size_t>(mask.width()));
 
-        for (int col = 0; col < mask.width(); ++col)
-            mask.at(col, row) = line[static_cast<std::size_t>(col)] != '.' ? 1 : 0;
+        for (Square::coordinates_type col = 0; col < mask.width(); ++col)
+            if (line[static_cast<std::size_t>(col)] != '.')
+                mask.set({col, row});
 
         ++row;
     }
