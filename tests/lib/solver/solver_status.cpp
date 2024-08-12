@@ -113,18 +113,22 @@ TEST_CASE("solver/solver_status")
     {
         std::setlocale(LC_ALL, "en_US.utf8");
 
-        SECTION("can generate log lines when logging is enabled")
+        SECTION("can generate log lines with and without a prefix")
         {
-            SolverStatus status{"prefix"};
+            SolverStatus status1;
+            SolverStatus status2{"prefix"};
 
-            CHECK_THAT(status.build_log_message(), Catch::Matchers::StartsWith("prefix "));
+            CHECK_THAT(status1.build_log_message(), Catch::Matchers::Equals("    0.000 ns (calls: 0, calculations: 0)"));
+            CHECK_THAT(status2.build_log_message(), Catch::Matchers::StartsWith("prefix "));
         }
 
-        SECTION("cannot generate log lines when logging is disabled")
+        SECTION("can generate log lines whether logging is enabled or not")
         {
-            SolverStatus status;
+            SolverStatus status1{"prefix", false};
+            SolverStatus status2{"prefix", true};
 
-            CHECK_THAT(status.build_log_message(), Catch::Matchers::Equals(""));
+            CHECK_THAT(status1.build_log_message(), Catch::Matchers::StartsWith("prefix "));
+            CHECK_THAT(status2.build_log_message(), Catch::Matchers::StartsWith("prefix "));
         }
 
         SECTION("can add a suffix to log lines")

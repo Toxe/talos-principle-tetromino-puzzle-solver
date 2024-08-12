@@ -7,8 +7,8 @@ namespace tptps {
 
 class SolverStatus {
 public:
-    SolverStatus(const std::string& log_prefix = "")
-        : logging_enabled_{!log_prefix.empty()}, log_prefix_{log_prefix} { }
+    SolverStatus(const std::string& log_prefix = "", const bool show_progress = true)
+        : show_progress_{show_progress && !log_prefix.empty()}, log_prefix_{log_prefix} { }
 
 public:
     void start();
@@ -26,7 +26,7 @@ public:
     [[nodiscard]] std::string build_log_message(const std::string& suffix = "") const;
 
 private:
-    bool logging_enabled_;
+    bool show_progress_;
     int previous_log_message_length_ = 0;
     std::chrono::steady_clock::time_point time_last_log_;
     std::string log_prefix_;

@@ -35,9 +35,6 @@ std::chrono::nanoseconds SolverStatus::duration() const
 
 void SolverStatus::print_log_message(const std::string& suffix)
 {
-    if (!logging_enabled_)
-        return;
-
     const std::string msg = build_log_message(suffix);
 
     fmt::print("\r{}", msg);
@@ -48,9 +45,6 @@ void SolverStatus::print_log_message(const std::string& suffix)
 
 std::string SolverStatus::build_log_message(const std::string& suffix) const
 {
-    if (!logging_enabled_)
-        return "";
-
     std::string msg = fmt::format("{} {:>11} (calls: {}, calculations: {}){}", log_prefix_, print_duration(duration()), function_called_, placements_calculated_, suffix);
     const int msg_length = str_mb_length(msg);
 
@@ -62,7 +56,7 @@ std::string SolverStatus::build_log_message(const std::string& suffix) const
 
 bool SolverStatus::should_print_log_message() const
 {
-    return logging_enabled_ && is_running_ && std::chrono::steady_clock::now() - time_last_log_ >= 100ms;
+    return show_progress_ && is_running_ && std::chrono::steady_clock::now() - time_last_log_ >= 100ms;
 }
 
 void SolverStatus::update(const uint64_t add_function_called, const uint64_t add_placements_calculated)
