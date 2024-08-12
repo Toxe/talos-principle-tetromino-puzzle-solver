@@ -40,7 +40,7 @@ std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetromino
         const std::vector<Tetromino> new_list = copy_vector_without_element(tetrominoes, p);
         status.add_placements_calculated(placements.size());
 
-        for (const auto& placement : placements) {
+        for (const Placement placement : placements) {
             const WithPlacedPiece with_owner_of_square{board, placement};
 
             if (board.is_filled()) {
