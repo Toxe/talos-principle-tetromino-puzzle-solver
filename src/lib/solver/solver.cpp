@@ -58,11 +58,12 @@ std::optional<Board> solve_puzzle(Board& board, std::vector<Tetromino> tetromino
 
 std::vector<Placement> find_all_possible_placements(const Board& board, const Tetromino tetromino)
 {
-    const auto orientations = get_distinct_tetromino_rotations(tetromino);
+    const auto distinct_rotations = get_distinct_tetromino_rotations(tetromino);
     std::vector<Placement> placements;
 
-    for (const auto rotation : orientations)
-        placements.append_range(find_possible_placements_for_rotation(board, tetromino, rotation));
+    for (const auto rotation : {Rotation::r0, Rotation::r90, Rotation::r180, Rotation::r270})
+        if (distinct_rotations.has(rotation))
+            placements.append_range(find_possible_placements_for_rotation(board, tetromino, rotation));
 
     return placements;
 }
