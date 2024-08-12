@@ -109,34 +109,34 @@ TEST_CASE("solver/solver_status")
         CHECK(status.is_running());
     }
 
-    SECTION("logging")
+    SECTION("progress logging")
     {
         std::setlocale(LC_ALL, "en_US.utf8");
 
-        SECTION("can generate log lines with and without a prefix")
+        SECTION("can generate progress lines with and without a prefix")
         {
             SolverStatus status1;
             SolverStatus status2{"prefix"};
 
-            CHECK_THAT(status1.build_log_message(), Catch::Matchers::Equals("    0.000 ns (calls: 0, calculations: 0)"));
-            CHECK_THAT(status2.build_log_message(), Catch::Matchers::StartsWith("prefix "));
+            CHECK_THAT(status1.build_progress_line(), Catch::Matchers::Equals("    0.000 ns (calls: 0, calculations: 0)"));
+            CHECK_THAT(status2.build_progress_line(), Catch::Matchers::StartsWith("prefix "));
         }
 
-        SECTION("can generate log lines whether logging is enabled or not")
+        SECTION("can generate progress lines whether progress output is enabled or not")
         {
             SolverStatus status1{"prefix", false};
             SolverStatus status2{"prefix", true};
 
-            CHECK_THAT(status1.build_log_message(), Catch::Matchers::StartsWith("prefix "));
-            CHECK_THAT(status2.build_log_message(), Catch::Matchers::StartsWith("prefix "));
+            CHECK_THAT(status1.build_progress_line(), Catch::Matchers::StartsWith("prefix "));
+            CHECK_THAT(status2.build_progress_line(), Catch::Matchers::StartsWith("prefix "));
         }
 
-        SECTION("can add a suffix to log lines")
+        SECTION("can add a suffix to progress lines")
         {
             SolverStatus status{"prefix"};
 
-            CHECK_THAT(status.build_log_message("end"), Catch::Matchers::EndsWith("end"));
-            CHECK_THAT(status.build_log_message("suffix"), Catch::Matchers::EndsWith("suffix"));
+            CHECK_THAT(status.build_progress_line("end"), Catch::Matchers::EndsWith("end"));
+            CHECK_THAT(status.build_progress_line("suffix"), Catch::Matchers::EndsWith("suffix"));
         }
     }
 }

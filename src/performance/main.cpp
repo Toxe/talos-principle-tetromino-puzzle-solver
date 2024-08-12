@@ -95,7 +95,7 @@ void run(CSVFile& csv_measurements, CSVFile& csv_summary, const bool show_progre
         if (!solution || !solution->is_filled())
             die(fmt::format("no solution found for: \"{}\"", dump_tetrominoes(tetrominoes)));
 
-        status.print_log_message("\n");
+        status.print_progress("\n");
 
         durations.push_back(status.duration().count());
         function_called.push_back(status.function_called());
