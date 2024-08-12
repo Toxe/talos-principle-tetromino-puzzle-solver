@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <cassert>
 
-#include "fmt/core.h"
-
 #include "../utility/duration.hpp"
 #include "placement_mask.hpp"
 
