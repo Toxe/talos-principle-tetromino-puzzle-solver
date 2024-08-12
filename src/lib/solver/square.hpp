@@ -6,7 +6,7 @@
 
 namespace tptps {
 
-using Square = Coords<int16_t>;
+using Square = Coords<int8_t>;
 
 std::string print_square(Square square);
 
